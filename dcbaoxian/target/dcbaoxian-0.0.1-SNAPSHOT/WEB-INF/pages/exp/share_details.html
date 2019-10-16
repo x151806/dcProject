@@ -1,0 +1,164 @@
+
+ <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+      <h1>文档详情
+        <small>Preview</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="#">Forms</a></li>
+        <li class="active">文档详情</li>
+      </ol>
+      
+    </section>
+ <section  class="content container-fluid">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+			
+				<h3 class="box-title">文档名称：<span id="wendang"></span></h3> 
+				<div class="box-tools">
+				
+					
+				</div>
+			</div>
+			<!-- /.box-header -->
+			
+			
+			<div class="col-md-6">
+			<!-- /.form-group -->
+               <div class="form-group">
+               <label for="exampleInputFile">上传文件</label>
+                  <input type="file" id="submitFile" name="submitFile">
+					<input type="button" id="upload-bt" value="提交"/>
+              </div>
+              <!-- /.form-group -->
+			<div class="box-body table-responsive no-padding" id="table-up">
+				上传记录：
+				<table class="table table-hover"  border="1" cellspacing="0">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>上传时间</th>
+							<th>上传人</th>
+						</tr>
+					</thead>
+					<tbody id="tbodyId">
+					    <tr>
+					     	<th>1</th>
+							<th>2019-7-12</th>
+							<th>大乔</th>
+					    </tr>
+					    <tr>
+					     	<th>2</th>
+							<th>2019-7-12</th>
+							<th>小乔</th>
+					    </tr>
+					    <tr>
+					     	<th>3</th>
+							<th>2019-7-12</th>
+							<th>米莱迪</th>
+					    </tr>
+					</tbody>
+					
+				</table>
+			</div>
+			</div>
+			
+			
+			
+			
+			<div class="col-md-6">
+			 <div class="form-group">
+			 <label >下载文件</label><br/>
+			<button type="button" id="down">选择文件</button><br/>
+			<button type="button" id="down">点击下载</button>
+			</div>
+			<div class="box-body table-responsive no-padding" id="table-down">
+				下载记录：
+				<table class="table table-hover"  border="1" cellspacing="0">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>下载时间</th>
+							<th>下载人</th>
+						</tr>
+					</thead>
+					<tbody id="tbodyId">
+					    <tr>
+					     	<th>1</th>
+							<th>2019-7-12</th>
+							<th>妲己</th>
+					    </tr>
+					    <tr>
+					     	<th>2</th>
+							<th>2019-7-12</th>
+							<th>伽罗</th>
+					    </tr>
+					</tbody>
+					
+				</table>
+			</div>
+			</div>
+			
+			
+			<div class="col-md-12">
+              <div class="box-footer">
+		          <button type="button" class="btn btn-info pull-right btn-save">退出</button>
+		        </div>
+    		 </div>
+			<div id="pageId" class="box-footer clearfix">
+			
+			</div>
+			
+			
+			
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+	
+	
+</div>
+ </section>
+<script type="text/javascript">
+$(function(){
+	
+	//按钮事件注册
+    $(".input-group-btn")
+  	.on("click",".btn-add",doLoadEditUI);
+	
+    $("#tbodyId")
+	.on("click","#a1",doDetails)
+	
+})
+
+
+
+
+
+function doDetails(){
+	var url="submit/doShareDetailsUI.do"
+		$("#mainContentId").load(url,function(){
+		
+	}) 
+}
+function doLoadEditUI(){
+	var url="submit/doShareEditUI.do"
+		$("#mainContentId").load(url,function(){
+		
+	}) 
+}
+
+
+
+
+
+
+</script>
+
+
+
+

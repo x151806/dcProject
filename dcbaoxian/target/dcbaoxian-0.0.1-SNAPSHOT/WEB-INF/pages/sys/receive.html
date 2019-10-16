@@ -1,0 +1,530 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">已认领列表</h3>
+				<div class="box-tools">
+					<div class="input-group input-group-sm" style="width: 350px;">
+						<input id="remarkContent" class="form-control" list="cars" />
+								<datalist id="cars">
+								</datalist>
+						
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default btn-comment">点评</button>
+						</div>
+						
+						<select name="status" id="status" class="form-control">
+								<option value="" selected="selected">请选择</option>
+								<option value="2">未开始</option>
+								<option value="3">工作进行中</option>
+								<option value="4">部分完成</option>
+								<option value="5">基本完成</option>
+								<option value="6">增加完善</option>
+								<option value="7">已完成</option>
+							</select>
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default btn-status">修改阶段</button>
+						</div>
+						
+						
+					</div>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover table-striped table-bordered" >
+					<thead>
+						<tr class="success">
+							<th>ID</th>
+							<th>序号</th>
+							<th>认领时间</th>
+							<th>会议类型</th>
+							<th>任务内容<span style="color:#00F">(鼠标悬停看全部内容)</span></th>
+							<th>下达主管</th>
+							<th>执行部门</th>
+							<th>执行人</th>
+							<th>约定完成时间</th>
+							<th>完成阶段</th>
+							<th>进度记录</th>
+							<th>主管点评</th>
+						</tr>
+					</thead>
+					<tbody id="tbodyId">
+					    <tr>
+					     <td colspan="10">数据正在加载中........................................</td>
+					    </tr>
+					</tbody>
+					
+				</table>
+			</div>
+			
+			<div class="layui-layer layui-layer-page layui-layer-molv layer-anim" id="treeLayer" type="page" times="2" showtime="0" contype="object"
+				style=" height: 600px; top: 50px; position: absolute; margin: 0 auto; display:none;z-index:999">
+				<div class="layui-layer-title" style="cursor: move;">进度记录</div>
+				<div class="layui-layer-content" style="height: 480px;">
+					
+
+
+					<div class="box box-info">
+					<div class="box-header with-border">
+						<h3 class="box-title">进度记录</h3>
+					</div>
+						
+						<span id="box-ids" style="display:none"></span>
+					<!-- /.box-header -->
+					<!-- form start -->
+					
+						
+					<!-- /.box-header -->
+							<div class="box-body table-responsive no-padding">
+								
+								<div class="col-md-7">
+								  <table class="table table-hover table-striped table-bordered" >
+									<thead>
+										<tr class="success">
+										    <th width="10%">记录</th>
+											<th width="15%">时间</th>
+										    <th width="40%">完成进度</th>
+											<th width="5%">记录人</th>
+										</tr>
+										
+									</thead>	
+										
+									
+									<tbody id="tbodyId2">
+										<tr>
+									     <td colspan="5">数据正在加载中........................................</td>
+									    </tr>
+										
+									</tbody>
+								  </table>
+								  
+								<!-- /.box-body -->
+									<div id="pageId2" class="box-footer clearfix">
+										
+						            </div>
+						        </div>
+							
+					        
+					        <div class="col-md-4">
+								<form class="form-horizontal" >
+								<div class="box-body">
+										
+									
+											<div class="form-group">
+												
+											
+												<div class="col-sm-12 pull-right">
+													<label for="progress" class=" control-label">完成进度</label>
+													<textarea rows="4" cols="30" class="form-control "
+														placeholder="进度详情...." name="progress" id="progress"></textarea>
+												</div>
+											<div class="col-md-12" id="and-progress">
+												<button type="reset" class="btn btn-default ">重置</button>
+												<button type="button" class="btn btn-info pull-right btn-save">提交</button>
+											</div>
+										</div>
+									
+									<!-- /.box-footer -->
+								</div>
+									</form>
+								
+							
+							</div>
+							</div>
+							
+					</div>
+
+
+				</div>
+				
+				<span class="layui-layer-setwin"> <a class="layui-layer-ico layui-layer-close layui-layer-close1 btn-cancel" ></a></span>
+				<div class="col-md-12">
+				 <div class="layui-layer-btn layui-layer-btn-">
+					<a class="layui-layer-btn1 btn-cancel">返回</a>
+			     </div>
+			    </div>
+		   </div>
+			<div id="pageId" class="box-footer clearfix">
+			
+			</div>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+<style>
+    table.table tr td {
+        border: 1px solid #C9E4D9/* 整体表格边框 */
+    }
+</style>
+
+
+<script type="text/javascript">
+$(function(){
+	
+	
+	$("#pageId").load("doPageUI.do",function(){//callback
+	       //发异步请求获取数据
+	       doGetObjects();
+	});
+	
+	showCommonList();
+    //按钮事件注册
+    $("#tbodyId")
+	.on("click",".btn-progress",doProgressUI)
+    //按钮事件注册
+    $(".input-group-btn")
+	.on("click",".btn-comment",doCommentUI)
+	.on("click",".btn-status",doStatusUI)
+    
+    $("#and-progress")
+	  .on("click",".btn-save",doAdd)
+	  
+	  
+    $(".layer-anim")
+	  .on("click",".btn-cancel",doCancel)
+
+
+
+});
+
+function showCommonList() {
+	$("#cars").append('<option value="">----- 请选择 -----</option>');
+	
+	var params = {type : 2}
+    	var url="mis/findCommonObject.do";
+ 	   //3.ajax request
+ 	   
+ 	   $.getJSON(url,params,function(result){
+ 		  if(result.state==1){
+ 			var list = result.data;
+ 			for (var i = 0; i < list.length; i++) {
+ 				
+				var op = '<option value="' + list[i].details + '">' + list[i].details + '</option>';
+				$("#cars").append(op);
+			}
+ 		   }else{
+ 			  var op = '<option value=""></option>';
+				$("#cars").append(op);
+ 		   }
+ 	   });
+	
+}
+
+
+function doStatusUI() {
+	if(!confirm("您确认修改吗？"))return;
+	var id=$("tbody input[name='radioId']:checked").val();
+	if(!id){
+		  alert("请先选择");
+		  return;
+	}
+	var params={"missionId":id,"status":$("#status").val()};
+	
+	var url="mis/doUpdateStatus.do";
+	   //3.ajax request
+	  $.post(url,params,function(result){//JsonResult
+    		 if(result.state==1){
+    			 alert(result.message);
+    			 doGetObjects();//重新查询
+    		 }else{
+    			 alert(result.message)
+    		 }
+    	})
+	
+	
+	
+	
+}	
+
+
+
+
+
+function doCommentUI() {
+	if(!confirm("您确认点评吗？"))return;
+	var id=$("tbody input[name='radioId']:checked").val();
+	if(!id){
+		  alert("请先选择");
+		  return;
+	}
+	var params={"missionId":id,"remarkContent":$("#remarkContent").val()};
+	
+	var url="mis/doUpdateRemark.do";
+	   //3.ajax request
+	  $.post(url,params,function(result){//JsonResult
+    		 if(result.state==1){
+    			 alert(result.message);
+    			 doGetObjects();//重新查询
+    		 }else{
+    			 alert(result.message)
+    		 }
+    	})
+	
+	
+	
+	
+}	
+	
+	
+	
+
+function doProgressUI() {
+	//显示div
+	$("#treeLayer").css("display", "block");
+	var abc=$(this).parents("tr").data("id");
+	$("#box-ids").html(abc);
+	doGetObjects2(abc);
+	
+	
+	
+	
+}
+
+
+function doCancel() {
+	$("#progress").val("");
+	$("#treeLayer").css("display", "none");
+}
+
+
+
+
+
+
+
+
+
+function doGetObjects(){
+	// debugger
+	 //1.定义请求的参数
+	 //1.1获取绑定的pageCurrent值
+	 var pageCurrent=
+	 $("#pageId").data("pageCurrent");
+	 //1.2没有值则认为是首页
+	 //js中变量值为undefined表示为false，0也是false
+	 if(!pageCurrent)pageCurrent=1;
+	 var params={"pageCurrent":pageCurrent};
+	 
+	 //2.定义请求的url
+	 var url="mis/doFindPageAcquires.do";
+	 //3.发送异步请求执行查询(浏览器会启动一个工作线程)
+	 //服务端数据返回以后会回调匿名函数，并将结果传递给
+	 //result变量(名字无所谓)
+	 $.get(url,params,function(result){//JsonResult
+		 //手动转换串为对象
+		 result=JSON.parse(result);
+		 //debugger
+		 console.log(result);//.....
+		 doHandleResponseResult(result);
+	 },"text");
+}
+//处理查询结果
+function doHandleResponseResult(result){
+	if(result.state==1){
+	    //console.log(result);
+	    //1.设置table中tbody部分的内容
+	    //1.1 result-->JsonResult
+	    //1.2 result.data-->PageObject
+	    //1.3 result.data.records-->List<SysLog>
+	    doSetTableBodyRows(result.data.records);
+	    //2.设置分页信息
+	    doSetPagination(result.data);
+  }else{
+	   doSetTableBodyErrors(result.message);
+	} 
+}
+
+function doSetTableBodyErrors(message){
+	   //获取body对象并清空
+	   var tBody=$("#tbodyId");
+	   tBody.empty();
+	   //创建tr对象
+	   var tr=$("<tr></tr>");
+	   //创建td对象
+	   //var len=$("table thead").find("tr").find("td").length;
+	   var len=$("table th ").length;
+	   
+	   var td=$("<td></td>");
+	   td.prop("colspan",len);
+	   td.append(message);
+	   tr.append(td);
+	   //将tr追加到tbody
+	   tBody.append(tr);
+}
+//将记录呈现在table对象的tbody中
+function doSetTableBodyRows(records){
+	 //1.获取tbody对象，并清空内容
+	 var tBody=$("#tbodyId");
+	 tBody.empty();//清空
+	 //2.迭代records记录，并将记录追加到tbody中
+	 for(var i=0;i<records.length;i++){
+		//2.1创建tr对象
+		var tr=$("<tr></tr>");
+		tr.data("id",records[i].missionId);
+		//2.2创建td对象
+		var tds=doCreateTds(records[i],i);//一条记录
+		//2.3将td对象内容追加到tr中
+		tr.append(tds);
+		//2.4将tr追加tbody中
+		tBody.append(tr);
+	 }
+}
+//创建当前行的所有td元素
+function doCreateTds(row,i){
+	Date.prototype.toLocaleString = function() {
+       return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " ;
+ 	};
+	var appointedTime = new Date(row.appointedTime).toLocaleString();
+	
+	Date.prototype.toLongString = function() {
+       return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " + this.getHours() + "点" + this.getMinutes() + "分" + this.getSeconds() + "秒";
+ };
+ var claimTime = new Date(row.claimTime).toLongString();
+ 		var dianping="";
+ 		if(row.remarkContent!=""){
+ 			dianping=row.remarkContent+" 点评人："+row.remarkSatrap;
+ 		}
+ 		var deptName=row.department;
+ 		  if(deptName==null){
+ 			  deptName="多人小组";
+ 		  }
+ 		  
+ 		 var jieduan="";
+ 		 if(row.status=="2"){
+ 			jieduan="未开始";
+  		}else if(row.status=="3"){
+  			jieduan="工作进行中";
+  		}else if(row.status=="4"){
+  			jieduan="部分完成";
+  		}else if(row.status=="5"){
+  			jieduan="基本完成";
+  		}else if(row.status=="6"){
+  			jieduan="增加完善";
+  		}else if(row.status=="7"){
+  			jieduan="已完成";
+  		}else{
+  			jieduan="未定义阶段";
+  		}
+ 		 
+ 		  
+ 		  
+ 		  
+ 		
+	     var tds="<td><input type='radio' name='radioId' value='"+row.missionId+"' ></td>"+
+		   	 "<td>"+(i+1)+"</td>"+
+		     "<td>"+claimTime+"</td>"+
+		     "<td>"+row.meeting+"</td>"+
+		     "<td><abbr title='"+row.task+"'>"+row.task.substring(0,20)+"</abbr></td>"+
+		     "<td>"+row.satrap+"</td>"+
+		     "<td>"+deptName+"</td>"+
+		     "<td>"+row.executor+"</td>"+
+		     "<td>"+appointedTime+"</td>"+
+		     "<td>"+jieduan+"</td>"+
+		     "<td><a class='btn btn-progress'>查看</a></td>"+
+		     "<td><abbr title='"+dianping+"'>"+dianping.substring(0,15)+"</abbr></td>";
+   return tds;
+}
+
+
+
+
+
+
+function doGetObjects2(abc){
+	var ids={disId : abc};
+	var url="mis/doFindProgress.do";
+	   //3.ajax request
+	   
+	   $.getJSON(url,ids,function(result){
+		  doHandleResponseResult2(result);
+	   });
+}
+
+function doHandleResponseResult2(result){
+	   
+	if(result.state==1){
+		  doSetTableBodyRows2(result.data);
+	   }else{
+		  doSetTableBodyErrors2(result.message);
+	   }
+}
+function doSetTableBodyErrors2(message){
+	   //获取body对象并清空
+	   var tBody=$("#tbodyId2");
+	   tBody.empty();
+	   //创建tr对象
+	   var tr=$("<tr></tr>");
+	   //创建td对象
+	   //var len=$("table thead").find("tr").find("th").length;
+	   var len=$("table th").length;
+	   var td=$("<td></td>");
+	   td.prop("colspan",len);
+	   td.append(message);
+	   tr.append(td);
+	   //将tr追加到tbody
+	   tBody.append(tr);
+}
+//将记录呈现在table对象的tbody中
+function doSetTableBodyRows2(records){
+	 //获取tbody对象,并清空
+	   var tBody=$("#tbodyId2");
+	   tBody.empty();
+	   //2.迭代数据,并追加到tBody
+	   for(var i=0;i<records.length;i++){
+		  //2.1构建tr对象
+		  var tr=$("<tr></tr>");
+		  //2.2构建tds对象
+		  var tds=doCreateTds2(records[i],i);
+		  //2.3将tds对象追加到tr中
+		  tr.append(tds);
+		  //2.4将tr追加到tbody中
+		  tBody.append(tr);
+	   }
+}
+function doCreateTds2(row,i){
+	Date.prototype.toLocaleString = function() {
+          return this.getFullYear() + "/" + (this.getMonth() + 1) + "/" + this.getDate() + "/ " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+    };
+	var unixTimestamp = new Date(row.createdTime);
+	commonTime = unixTimestamp.toLocaleString();
+	
+	   var tds=
+       	"<td>"+"进度记录："+(parseInt(i)+1)+"</td>"+
+       	"<td>"+commonTime+"</td>"+
+       	"<td>"+row.progress+"</td>"+
+	     "<td >"+row.createdUser+"</td>";
+       return tds;
+ }
+
+
+function doAdd() {
+	var id=$("#box-ids").text();
+	//1.参数(表单数据)
+	var params={
+			progress : $("#progress").val(),
+			disId : id
+		};
+	
+	var url="mis/doSaveProgress.do"; 
+	console.log(params);
+	
+	//3.ajax request
+	$.post(url,params,function(result){
+		  if(result.state==1){
+			  alert(result.message);
+			  doCancel();
+		  }else{
+			  alert(result.message);
+		  }
+	  });
+}
+
+</script>
+
+
+
+
+

@@ -1,0 +1,273 @@
+  <!-- Content Wrapper. Contains page content -->
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+                问题提交--添加
+        <small>Preview</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+       
+        <li class="active">问题提交</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- SELECT2 EXAMPLE -->
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title"></h3>
+
+          <div class="box-tools pull-right">
+          <!-- 最小化 -->
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <!-- 关闭 -->
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+          <div class="col-md-4">
+            	<div class="form-group">
+                  <label>类型</label>
+                  <select class="form-control" name="type" id="type" style="width: 100%;" >
+                  <option value="" selected="selected">请选择</option>
+                  <option value="修改" >修改</option>
+                  <option value="开发" >开发</option>
+                </select>
+                  
+                </div>
+                <div class="form-group">
+                  <label >菜单</label>
+                  <input type="text" class="form-control" name="menu" id="menu" placeholder="菜单">
+                </div>
+              
+              	
+            </div>
+                
+                
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label >端口</label>
+                <select class="form-control" name="port" id="port"  style="width: 100%;">
+                <option value="" selected="selected">请选择</option>
+                  <option value="电脑端">电脑端</option>
+                  <option value="手机端">手机端</option>
+                 <option value="微信端">微信端</option>
+                  
+                </select>
+                </div>
+              <!-- /.form-group -->
+              <div class="form-group">
+                  <label>问题描述</label>
+                  <textarea class="form-control" name="problem" id="problem" rows="2" placeholder="Enter ..."></textarea>
+                </div>
+              <!-- /.form-group -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-4">
+                <div class="form-group">
+                  <label>系统角色</label>
+                  <input type="text" class="form-control" id="systemRole" name="systemRole" placeholder="角色">
+                </div>
+              
+              <!-- /.form-group -->
+               <div class="form-group">
+               <label for="exampleInputFile">上传文件</label>
+                  <input type="file" id="formId" multiple="multiple" name="submitFile">
+					
+              </div>
+              
+              
+              <!-- /.form-group -->
+            </div>
+            
+              
+            
+              <div class="col-md-12">
+              
+              <div class="box-footer">
+		          <button type="button" class="btn btn-default btn-cancel">取消</button>
+		          <button type="button" class="btn btn-info pull-right btn-save">保存</button>
+		        </div>
+              </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.box-body -->
+       
+      </div>
+      <!-- /.box -->
+
+      </section>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Select2 -->
+<script src="bower_components/select2/dist/js/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="plugins/input-mask/jquery.inputmask.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- date-range-picker -->
+<script src="bower_components/moment/min/moment.min.js"></script>
+<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap color picker -->
+<script src="bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<!-- SlimScroll -->
+<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="plugins/iCheck/icheck.min.js"></script>
+<!-- FastClick -->
+<script src="bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- Page script -->
+<script>
+  $(function () {
+	  $(".box-footer")
+	  .on("click",".btn-cancel",doCancel)
+	  .on("click",".btn-save",doAdd);
+   
+
+   
+  })
+  function doCancel(){
+	
+	$("#mainContentId").load("submit/doBugSubmitNoUI.do");
+ }
+  
+  function doAdd(){
+  	//1.参数(表单数据)
+  	var params=doGetData();
+  	
+  	var url="submit/doSaveObject.do"; 
+  	console.log(params);
+  	
+  	//3.ajax request
+  	$.post(url,params,function(result){
+		  if(result.state==1){
+			  alert(result.message);
+			  doUpload();
+			  doCancel();
+		  }else{
+			  alert(result.message);
+		  }
+	  });
+  }
+  function doGetData(){
+  	
+  	var params = {
+  			
+  			type : $("#type").val(),
+  			menu : $("#menu").val(),
+  			port : $("#port").val(),
+  			problem : $("#problem").val(),
+  			systemRole : $("#systemRole").val()
+  			
+			}
+  	return params;
+  }
+  
+  
+  
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ function doUpload(){
+		var names="";
+		var fp = $("#formId");
+		var lg = fp[0].files.length; 
+		var items = fp[0].files;
+		var fragment = "";
+		if (lg > 0) {
+			for (var i = 0; i < lg; i++) {
+			var fileName = items[i].name; //获得文件名
+			var fileSize = items[i].size; //获得文件大小 
+				if(fileSize>10485760){
+					names=names+fileName+","
+				}
+			}
+		}
+		names = names.substr(0,names.length-1);
+		if(lg == 0){
+			return false;
+		}else if(!names==""){
+			alert(names+"文件太大,请上传小于10M的文件！");
+			return false;
+		}else{
+			var formData = new FormData();
+			for (var i = 0; i < $("#formId").get(0).files.length; i++) {
+				formData.append("uploadFile", $("#formId").get(0).files[i]);
+			}
+			
+			
+		    $.ajax({
+		            url:'submit/upload.do',
+		            type:'post',
+		            data:formData,
+		            //必须false才会自动加上正确的Content-Type
+		            contentType: false,
+		            //必须false才会避开jQuery对 formdata 的默认处理
+		            //XMLHttpRequest会对 formdata 进行正确的处理
+		            processData: false,
+		            cache:false,
+		            async:true,
+		            success:function(result){
+		            	 
+		            		 alert(result.url+"上传成功！");
+		        		 
+		               
+		            },
+		            error:function(result){
+		                alert("后台发生异常");
+		            }
+
+		        }); 
+			
+			
+		}
+		
+		
+		
+ 
+
+ 
+}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dc.exp.dao.ExpExploitDocumentDao">
+  	
+ 	
+   
+	
+    <insert id="insertDocument" parameterType="com.dc.exp.entity.ExpExploitDocument">
+       insert into exploit_upload 
+       (uploadId,disId,type,site,fileName,createdTime,createdUser,audit) 
+       values 
+       (#{uploadId},#{disId},#{type},#{site},#{fileName},getdate(),#{createdUser},#{audit}) 
+    </insert>
+   
+    <insert id="insertDownFile" parameterType="com.dc.exp.entity.ExpExploitDownFile">
+       insert into exploit_downFile 
+       (downId,uploadId,fileName,downTime,downName) 
+       values 
+       (#{downId},#{uploadId},#{fileName},getdate(),#{downName}) 
+    </insert>
+   
+  
+   
+   <delete id="deleteDownFile"> 
+      
+      delete from exploit_downFile 
+      where uploadId = #{uploadId} 
+   
+   </delete>
+   
+   <delete id="deleteDocument"> 
+      
+      delete from exploit_upload 
+      where uploadId = #{uploadId} 
+   
+   </delete>
+   
+   <delete id="deleteBtDid"> 
+      
+      delete from exploit_upload 
+      where disId = #{disId} 
+   
+   </delete>
+   
+
+	<update id="updateDocument" 
+       parameterType="com.dc.exp.entity.ExpExploitDocument">
+         update exploit_upload 
+         set auditName=#{auditName},
+          audit=#{audit} 
+        where uploadId=#{uploadId}
+    </update>
+	 
+  
+   
+   <select id="findDocument"
+           resultType="com.dc.exp.entity.ExpExploitDocument">
+           
+         select * 
+         from exploit_upload 
+         where disId = #{disId} and type = #{type} 
+         order by createdTime desc
+         
+   </select>
+   
+   <select id="findDownFile"
+           resultType="com.dc.exp.entity.ExpExploitDownFile">
+           
+         select * 
+         from exploit_downFile 
+         where 1=1 
+         <if test="uploadId!=null and uploadId!=''">
+	         and uploadId in (${uploadId}) 
+	     </if>
+         
+         <if test="uploadId==null or uploadId==''">
+	         and uploadId='-1' 
+	     </if>
+         
+         order by downTime asc
+         
+   </select>
+   
+   <select id="getFindByDid" 
+           resultType="int">
+      
+	        select count(*) 
+	        from exploit_upload where disId= #{disId} 
+	        
+   </select>
+   
+   
+  
+   
+   
+   
+</mapper>

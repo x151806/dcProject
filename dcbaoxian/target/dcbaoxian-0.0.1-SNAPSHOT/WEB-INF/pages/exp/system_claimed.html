@@ -1,0 +1,588 @@
+
+ <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+      <h1>问题进度
+        <small>Preview</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="#">Forms</a></li>
+        <li class="active">问题进度</li>
+      </ol>
+      
+    </section>
+ <section  class="content container-fluid">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+			
+				<h3 class="box-title">查询列表</h3> 
+				<div class="box-tools">
+				
+					<div class="input-group input-group-sm" style="width: 350px;">
+					
+						<input id="remarkContent" class="form-control" list="cars" />
+								<datalist id="cars">
+								</datalist>
+						
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default btn-comment">点评</button>
+						</div>
+						
+						<select name="status" id="status" class="form-control">
+								<option value="" selected="selected">请选择</option>
+								<option value="2">未开始</option>
+								<option value="3">正在修改</option>
+								<option value="4">已上传</option>
+								<option value="5">正在测试</option>
+								<option value="6">完成</option>
+							</select>
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default btn-status">修改阶段</button>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover table-striped table-bordered" >
+					<thead>
+						<tr class="success">
+						    <th>ID</th>
+							<th>序号</th>
+							<th>提交时间</th>
+							<th>提交人</th>
+							<th>类型</th>
+							<th>端口</th>
+							<th>系统角色</th>
+							<th>菜单</th>
+							<th>问题描述</th>
+							<th>上传资料</th>
+							<th>执行人</th>
+							<th>完成阶段</th>
+							<th>进度记录</th>
+							<th>主管点评</th>
+						</tr>
+					</thead>
+					<tbody id="tbodyId">
+					    <tr>
+					     <td colspan="13">数据正在加载中........................................</td>
+					    </tr>
+					</tbody>
+					
+				</table>
+			</div>
+			
+			
+			<div class="layui-layer layui-layer-page layui-layer-molv layer-anim" id="treeLayer" type="page" times="2" showtime="0" contype="object"
+				style=" height: 600px; top: 50px; position: absolute; margin: 0 auto; display:none;z-index:999">
+				<div class="layui-layer-title" style="cursor: move;">进度记录</div>
+				<div class="layui-layer-content" style="height: 480px;">
+					
+
+
+					<div class="box box-info">
+					<div class="box-header with-border">
+						<h3 class="box-title">进度记录</h3>
+					</div>
+						
+						<span id="box-ids" style="display:none"></span>
+					<!-- /.box-header -->
+					<!-- form start -->
+					
+						
+					<!-- /.box-header -->
+							<div class="box-body table-responsive no-padding">
+								
+								<div class="col-md-7">
+								  <table class="table table-hover table-striped table-bordered" >
+									<thead>
+										<tr class="success">
+										    <th width="10%">记录</th>
+											<th width="15%">时间</th>
+										    <th width="40%">完成进度</th>
+											<th width="5%">记录人</th>
+										</tr>
+										
+									</thead>	
+										
+									
+									<tbody id="tbodyId2">
+										<tr>
+									     <td colspan="5">数据正在加载中........................................</td>
+									    </tr>
+										
+									</tbody>
+								  </table>
+								  
+								<!-- /.box-body -->
+									<div id="pageId2" class="box-footer clearfix">
+										
+						            </div>
+						        </div>
+							
+					        
+					        <div class="col-md-4">
+								<form class="form-horizontal" >
+								<div class="box-body">
+										
+									
+											<div class="form-group">
+												
+											
+												<div class="col-sm-12 pull-right">
+													<label for="progress" class=" control-label">完成进度</label>
+													<textarea rows="4" cols="30" class="form-control "
+														placeholder="进度详情...." name="progress" id="progress"></textarea>
+												</div>
+											<div class="col-md-12" id="and-progress">
+												<button type="reset" class="btn btn-default ">重置</button>
+												<button type="button" class="btn btn-info pull-right btn-save">提交</button>
+											</div>
+										</div>
+									
+									<!-- /.box-footer -->
+								</div>
+									</form>
+								
+							
+							</div>
+							</div>
+							
+					</div>
+
+
+				</div>
+				
+				<span class="layui-layer-setwin"> <a class="layui-layer-ico layui-layer-close layui-layer-close1 btn-cancel" ></a></span>
+				<div class="col-md-12">
+				 <div class="layui-layer-btn layui-layer-btn-">
+					<a class="layui-layer-btn1 btn-cancel">返回</a>
+			     </div>
+			    </div>
+		   </div>
+			
+			<div id="pageId" class="box-footer clearfix">
+			
+			</div>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+ </section>
+ 
+ 
+<style>
+    table.table tr td {
+        border: 1px solid #C9E4D9; /* 整体表格边框 */
+    }
+    
+</style>
+<script type="text/javascript">
+$(function(){
+	$("#pageId").load("doPageUI.do",function(){
+        //发异步请求获取数据
+        doGetObjects();
+ 	});
+	
+	
+	showCommonList();
+	
+    //按钮事件注册
+    $("#tbodyId")
+	.on("click",".btn-progress",doProgressUI)
+	  
+	  
+    $(".layer-anim")
+	  .on("click",".btn-cancel",doCancel)
+	  
+	  $("#and-progress")
+	  .on("click",".btn-save",doAdd)
+	  
+    $(".input-group-btn")
+	  .on("click",".btn-file",doDownfile)
+	  .on("click",".btn-status",doStatusUI)
+	  .on("click",".btn-comment",doCommentUI)
+	  
+    $("#tbodyId")
+        .on("click",'.btn-file',dofindFileUI)
+	  
+	  
+});
+
+
+function doProgressUI() {
+	//显示div
+	$("#treeLayer").css("display", "block");
+	var abc=$(this).parents("tr").data("id");
+	$("#box-ids").html(abc);
+	doGetObjects2(abc);
+	
+	
+}
+
+
+function doGetObjects2(abc){
+	var ids={disId : abc};
+	var url="submit/doFindProgress.do";
+	   //3.ajax request
+	   
+	   $.getJSON(url,ids,function(result){
+		  doHandleResponseResult2(result);
+	   });
+}
+
+function doHandleResponseResult2(result){
+	   
+	if(result.state==1){
+		  doSetTableBodyRows2(result.data);
+	   }else{
+		  doSetTableBodyErrors2(result.message);
+	   }
+}
+function doSetTableBodyErrors2(message){
+	   //获取body对象并清空
+	   var tBody=$("#tbodyId2");
+	   tBody.empty();
+	   //创建tr对象
+	   var tr=$("<tr></tr>");
+	   //创建td对象
+	   //var len=$("table thead").find("tr").find("th").length;
+	   var len=$("table th").length;
+	   var td=$("<td></td>");
+	   td.prop("colspan",len);
+	   td.append(message);
+	   tr.append(td);
+	   //将tr追加到tbody
+	   tBody.append(tr);
+}
+//将记录呈现在table对象的tbody中
+function doSetTableBodyRows2(records){
+	 //获取tbody对象,并清空
+	   var tBody=$("#tbodyId2");
+	   tBody.empty();
+	   //2.迭代数据,并追加到tBody
+	   for(var i=0;i<records.length;i++){
+		  //2.1构建tr对象
+		  var tr=$("<tr></tr>");
+		  //2.2构建tds对象
+		  var tds=doCreateTds2(records[i],i);
+		  //2.3将tds对象追加到tr中
+		  tr.append(tds);
+		  //2.4将tr追加到tbody中
+		  tBody.append(tr);
+	   }
+}
+function doCreateTds2(row,i){
+	Date.prototype.toLocaleString = function() {
+          return this.getFullYear() + "/" + (this.getMonth() + 1) + "/" + this.getDate() + "/ " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+    };
+	var unixTimestamp = new Date(row.createdTime);
+	commonTime = unixTimestamp.toLocaleString();
+	
+	   var tds=
+       	"<td>"+"进度记录："+(parseInt(i)+1)+"</td>"+
+       	"<td>"+commonTime+"</td>"+
+       	"<td>"+row.progress+"</td>"+
+	     "<td >"+row.createdUser+"</td>";
+       return tds;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function doCommentUI() {
+	if(!confirm("您确认点评吗？"))return;
+	var id=$("tbody input[name='radioId']:checked").val();
+	if(!id){
+		  alert("请先选择");
+		  return;
+	}
+	var params={"problemId":id,"remarkContent":$("#remarkContent").val()};
+	
+	var url="submit/doUpdateRemark.do";
+	   //3.ajax request
+	$.post(url,params,function(result){//JsonResult
+    		 if(result.state==1){
+    			 alert(result.message);
+    			 doGetObjects();//重新查询
+    		 }else{
+    			 alert(result.message)
+    		 }
+    })
+	
+	
+	
+	
+}	
+	
+	
+
+
+function doStatusUI() {
+	var id=$("tbody input[name='radioId']:checked").val();
+	if(!id){
+		  alert("请先选择");
+		  return;
+	}
+	var params={"problemId":id,"status":$("#status").val()};
+	console.log(params);
+	var url="submit/doUpdateStatus.do";
+	   //3.ajax request
+	  $.post(url,params,function(result){//JsonResult
+    		 if(result.state==1){
+    			 alert(result.message);
+    			 doGetObjects();//重新查询
+    		 }else{
+    			 alert(result.message)
+    		 }
+    	})
+	
+	
+}	
+function doGetCheckedIds(){
+	 //1.定义一个数组用于存储选中的记录id
+	 var idArray=[];//new Array();
+	 //2.获取tbody中所有的checkbox对象
+	 $("#tbodyId input[type='checkbox']")
+	 //3.迭代所有的checkbox(借助each函数)
+	 .each(function(){//每发现一个checkbox都会执行
+	 //4.将选中的checkbox对象的值存储到数组
+		 //$(this)指向当前的type为checkbox对象
+	     if($(this).prop("checked")){
+	    	//$(this).val() 获取当前checkbox对象value属性值
+	    	//push为数组中用于存数据的函数
+		    idArray.push($(this).val());
+		 }
+	 })
+	 //5.返回结果
+	 return idArray;
+}
+
+
+function dofindFileUI(){
+	
+	var abc=$(this).parents("tr").data("id");
+	
+	var title="查看文件";
+	
+	var url="submit/doBugSubmitFileUI.do"
+	  	
+	$("#mainContentId").load(url,function(){
+		$(".box-title").html(title);
+		$("#box-ids").html(abc);
+	})
+	
+}
+
+
+
+
+function showCommonList() {
+	$("#cars").append('<option value="">----- 请选择 -----</option>');
+	
+	var params = {type : 2}
+    	var url="mis/findCommonObject.do";
+ 	   //3.ajax request
+ 	   
+ 	   $.getJSON(url,params,function(result){
+ 		  if(result.state==1){
+ 			var list = result.data;
+ 			for (var i = 0; i < list.length; i++) {
+ 				
+				var op = '<option value="' + list[i].details + '">' + list[i].details + '</option>';
+				$("#cars").append(op);
+			}
+ 		   }else{
+ 			  var op = '<option value=""></option>';
+				$("#cars").append(op);
+ 		   }
+ 	   });
+	
+}
+
+
+
+
+function doDownfile() {
+	 var a="E:/dc-upload/system-problem/2019/08/04/TortoiseSVN-1.12.0.28568-64-svn-1.12.0.msi"
+	 var b="TortoiseSVN-1.12.0.28568-x64-svn-1.12.0.msi"
+	
+	
+	 window.location="submit/download.do?site="+a+"&filename="+b;
+
+	
+	
+}
+
+
+
+
+
+
+
+
+
+function doAdd() {
+	var id=$("#box-ids").text();
+	//1.参数(表单数据)
+	var params={
+			progress : $("#progress").val(),
+			disId : id
+		};
+	
+	var url="submit/doSaveProgress.do"; 
+	console.log(params);
+	
+	//3.ajax request
+	$.post(url,params,function(result){
+		  if(result.state==1){
+			  alert(result.message);
+			  doCancel();
+		  }else{
+			  alert(result.message);
+		  }
+	  });
+}
+
+function doCancel() {
+	$("#progress").val("");
+	$("#treeLayer").css("display", "none");
+}
+
+
+function doGetObjects(){
+	//初始化thead中checkbox状态
+	 $("#checkAll").prop("checked",false);
+
+   //1.params
+   //获取在Page.html中绑定的当前页码值
+   var pageCurrent=$("#pageId").data("pageCurrent");
+   //假如没有值,设置初始值为1
+   if(!pageCurrent)pageCurrent=1;
+   //var params="pageCurrrent="+pageCurrent;
+   var params={"pageCurrent":pageCurrent};
+	
+   var url="submit/findPageAllocating.do";
+   
+   
+   //3.ajax request
+   console.log(params);
+   $.getJSON(url,params,function(result){
+	   
+	   doHandleResponseResult(result);
+   });
+}
+function doHandleResponseResult(result){
+	
+	   if(result.state==1){
+		  doSetTableBodyRows(result.data.records);
+		  doSetPagination(result.data);
+	   }else{
+		  doSetTableBodyErrors(result.message);
+	   }
+}
+function doSetTableBodyErrors(message){
+	   //获取body对象并清空
+	   var tBody=$("#tbodyId");
+	   tBody.empty();
+	   //创建tr对象
+	   var tr=$("<tr></tr>");
+	   //创建td对象
+	   //var len=$("table thead").find("tr").find("td").length;
+	   var len=$("table th").length;
+	   
+	   var td=$("<td></td>");
+	   td.prop("colspan",len);
+	   td.append(message);
+	   tr.append(td);
+	   //将tr追加到tbody
+	   tBody.append(tr);
+}
+function doSetTableBodyRows(records){
+	   
+	  //获取tbody对象,并清空
+	   var tBody=$("#tbodyId");
+	   tBody.empty();
+	   //2.迭代数据,并追加到tBody
+	   for(var i=0;i<records.length;i++){
+		  //2.1构建tr对象
+		  var tr=$("<tr></tr>");
+		  tr.data("id",records[i].problemId);
+		  //2.2构建tds对象
+		  var tds=doCreateTds(records[i],i);
+		  //2.3将tds对象追加到tr中
+		  tr.append(tds);
+		  //2.4将tr追加到tbody中
+		  tBody.append(tr);
+	   }
+ }
+function doCreateTds(row,i){
+	
+	var dianping="";
+		if(row.remarkContent!=""){
+			dianping=row.remarkContent+" 点评人："+row.remarkSatrap;
+		}
+	Date.prototype.toLocaleString = function() {
+          return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " ;
+    };
+	var unixTimestamp = new Date(row.createdTime).toLocaleString();
+	workTime = unixTimestamp;
+	
+	var jieduan="";
+	 if(row.status=="2"){
+		jieduan="未开始";
+		}else if(row.status=="3"){
+			jieduan="正在修改";
+		}else if(row.status=="4"){
+			jieduan="已上传";
+		}else if(row.status=="5"){
+			jieduan="正在测试";
+		}else if(row.status=="6"){
+			jieduan="完成";
+		}else{
+			jieduan="未定义阶段";
+		}
+	 
+	   var tds="<td><input type='radio' name='radioId' value='"+row.problemId+"' ></td>"+
+       	"<td>"+(parseInt(i)+1)+"</td>"+
+       	"<td>"+workTime+"</td>"+
+       	"<td>"+row.createdUser+"</td>"+
+	     "<td>"+row.type+"</td>"+
+	     "<td>"+row.port+"</td>"+
+	     "<td>"+row.systemRole+"</td>"+
+	     "<td>"+row.menu+"</td>"+
+	     "<td><abbr title='"+row.problem+"'>"+row.problem.substring(0,20)+"</abbr></td>"+
+	     "<td><a class='btn btn-file'>查看</a></td>"+
+	     "<td>"+row.executor+"</td>"+
+	     "<td>"+jieduan+"</td>"+
+	     "<td><a class='btn btn-progress'>查看</a></td>"+
+	     "<td>"+dianping+"</td>";
+       return tds;
+      
+		
+ }
+</script>
+
+
+
+

@@ -1,0 +1,205 @@
+<!-- Horizontal Form -->
+<div class="box box-info">
+	<div class="box-header with-border">
+		
+		<h3 class="box-title">主管评价</h3>
+	</div>
+		
+		<span id="box-ids" style="display:none"></span>
+	<!-- /.box-header -->
+	<!-- form start -->
+	
+		
+	<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+				
+				<div class="col-md-6">
+				  <table class="table table-hover table-striped table-bordered" >
+					<thead>
+						<tr class="info">
+						    <th>序号</th>
+						    <th>提交时间</th>
+						    <th>姓名</th>
+							<th>主管评价</th>
+						</tr>
+					</thead>	
+						
+					
+					<tbody id="tbodyId">
+						<tr>
+					     <td colspan="4">数据正在加载中........................................</td>
+					    </tr>
+						
+					</tbody>
+				  </table>
+				  
+				<!-- /.box-body -->
+					<div id="pageId" class="box-footer clearfix">
+						
+		            </div>
+		        </div>
+			
+	        
+	        <div class="col-md-5">
+				<form class="form-horizontal" >
+				<div class="box-body">
+						
+					
+							<div class="form-group">
+									<label for="explain" class="col-sm-2 control-label">评价</label>
+								<div class="col-sm-10">
+									<textarea rows="4" cols="30" class="form-control"
+										placeholder="评价...." name="modifterComment" id="modifterComment"></textarea>
+								</div>
+							<div class="col-md-12">
+								<button type="button" class="btn btn-default btn-cancel">取消</button>
+								<button type="button" class="btn btn-info pull-right btn-save">提交</button>
+							</div>
+						</div>
+					
+					<!-- /.box-footer -->
+				</div>
+					</form>
+				
+			
+			</div>
+			</div>
+			
+</div>
+
+
+
+<!-- jQuery 3 -->
+<script type="text/javascript" src="bower_components/ztree/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="bower_components/layer/layer.js"></script>
+
+<style>
+    table.table tr td {
+        border: 1px solid #C9E4D9; /* 整体表格边框 */
+    }
+   
+</style>
+
+
+<script type="text/javascript">
+    
+    $(function(){
+		doGetObjects();
+    	$(".form-group")
+    	.on("click",".btn-save",doSave)
+    	.on("click",".btn-cancel",doCancel);
+    	
+    });
+   
+    function doCancel(){
+    	var url="report/doReportListUI.do";
+    	$("#mainContentId")
+    	.load(url,function(){
+    	  $("#mainContentId").removeData();
+    	});
+    }
+    
+    function doSave(){
+    	//1.参数(表单数据)
+    	var params=doGetEditFormData();
+    	
+    	var url="report/doSaveModComment.do"; 
+    	console.log(params);
+    	
+    	//3.ajax request
+    	$.post(url,params,function(result){
+  		  if(result.state==1){
+  			  alert(result.message);
+  			  doCancel();
+  		  }else{
+  			  alert(result.message);
+  		  }
+  	  });
+    }
+    function doGetEditFormData(){
+    	var id=$("#box-ids").text();
+    	var params = {
+    			modifterComment : $("#modifterComment").val(),
+    			reportId : id
+			}
+    	return params;
+    }
+    
+    function doGetObjects(){
+    	
+    	var id=$("#box-ids").text();
+    	var ids={reportId : id};
+    	var url="report/doFindModComment.do";
+ 	   //3.ajax request
+ 	   
+ 	   $.getJSON(url,ids,function(result){
+ 		  doHandleResponseResult(result);
+ 	   });
+    }
+    
+    function doHandleResponseResult(result){
+		   
+    	if(result.state==1){
+  		  doSetTableBodyRows(result.data);
+  		  doSetPagination(result.data);
+  	   }else{
+  		  doSetTableBodyErrors(result.message);
+  	   }
+	}
+    function doSetTableBodyErrors(message){
+ 	   //获取body对象并清空
+ 	   var tBody=$("#tbodyId");
+ 	   tBody.empty();
+ 	   //创建tr对象
+ 	   var tr=$("<tr></tr>");
+ 	   //创建td对象
+ 	   //var len=$("table thead").find("tr").find("th").length;
+ 	   var len=$("table th").length;
+ 	   var td=$("<td></td>");
+ 	   td.prop("colspan",len);
+ 	   td.append(message);
+ 	   tr.append(td);
+ 	   //将tr追加到tbody
+ 	   tBody.append(tr);
+    }
+  //将记录呈现在table对象的tbody中
+    function doSetTableBodyRows(records){
+    	 //获取tbody对象,并清空
+ 	   var tBody=$("#tbodyId");
+ 	   tBody.empty();
+ 	   //2.迭代数据,并追加到tBody
+ 	   for(var i=0;i<records.length;i++){
+ 		  //2.1构建tr对象
+ 		  var tr=$("<tr></tr>");
+ 		  //2.2构建tds对象
+ 		  var tds=doCreateTds(records[i],i);
+ 		  //2.3将tds对象追加到tr中
+ 		  tr.append(tds);
+ 		  //2.4将tr追加到tbody中
+ 		  tBody.append(tr);
+ 	   }
+    }
+	function doCreateTds(row,i){
+		Date.prototype.toLocaleString = function() {
+	          return this.getFullYear() + "/" + (this.getMonth() + 1) + "/" + this.getDate() + "/ " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+	    };
+		var unixTimestamp = new Date(row.createdTime);
+		commonTime = unixTimestamp.toLocaleString();
+		commentTime = commonTime;
+		   var tds=
+	       	"<td>"+(parseInt(i)+1)+"</td>"+
+	       	"<td>"+commentTime+"</td>"+
+	       	"<td>"+row.createdUser+"</td>"+
+		     "<td >"+row.modifterComment+"</td>";
+	       return tds;
+	 }
+    
+
+</script>
+
+
+
+
+
+
+

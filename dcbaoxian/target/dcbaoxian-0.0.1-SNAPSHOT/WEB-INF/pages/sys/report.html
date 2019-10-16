@@ -1,0 +1,461 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">工作日志</h3>
+				
+				<div class="box-tools">
+					<div class="input-group input-group-sm" style="width: 350px;">
+						
+						<div class="input-group-btn">
+						<span class="box-title" style="color: red">*</span>
+						<span class="box-title" style=" font-size:15px">可查姓名：</span>
+						</div>
+						<select id="down" name="down" class="form-control"></select>
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default btn-search">
+                                <i class="fa fa-search"></i>
+							</button>
+						</div>
+						
+						<div class="input-group-btn" >
+							<button type="button" class="btn btn-default btn-add">添加</button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding" >
+				<div class="input-group input-group-sm" style="width: 300px;">
+					<div class="input-group-btn">
+						<span class="box-title" style="color: red">*</span>
+						<span class="box-title" style=" font-size:15px">查询日期：</span>
+						</div>
+						<input type="date" class="form-control" name="createdTime" id="createdTime"/>
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default btn-findTime">
+                                <i class="fa fa-search"></i>
+							</button>
+						</div>
+						
+				</div>
+				<div style="height:20px"></div>
+				  <table class="table table-hover table-striped table-bordered" >
+					<thead>
+						<tr class="success">
+						    <th>序号</th>
+						    <th>日期</th>
+						    <th>姓名</th>
+							<th>今日工作内容填写</th>
+							<th>明日工作计划填写</th>
+							<th>意见和建议</th>
+							<th>日志备注</th>
+							<th>主管点评</th>
+							<th>操作</th>
+						</tr>
+					</thead>	
+						
+					
+					<tbody id="tbodyId">
+						<tr>
+					     <td colspan="10">数据正在加载中........................................</td>
+					    </tr>
+						
+					</tbody>
+				  </table>
+				  
+				  
+				  
+				
+			</div>
+			
+			
+			
+			<!-- /.box-body -->
+			<div id="pageId" class="box-footer clearfix">
+				
+            </div>
+            
+            
+            
+         
+          
+          
+          
+          
+          
+          
+          
+            
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+<script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap color picker -->
+<script src="bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+<script src="bower_components/weup/zDialog.js"></script>
+<script src="bower_components/weup/zDrag.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    table.table tr td {
+        border: 1px solid #C9E4D9; /* 整体表格边框 */
+    }
+    
+</style>
+
+
+<script type="text/javascript">
+	$(function(){
+		
+		
+		showProvinceList();
+		$("#pageId").load("doPageUI.do",function(){
+			  doGetObjects();
+		  });
+		$(".input-group-btn")
+		.on("click",".btn-add",doLoadEditUI)
+		.on("click",".btn-search",doQueryObjects)
+		.on("click",".btn-findTime",doFundByTime)
+		
+	
+		$("#tbodyId")
+		.on("click",".btn-modWork",doLoadModWorkUI)
+		.on("click",".btn-modComment",doLoadModCommentUI)
+		.on("click",".btn-particulars",doLoadReportUI)
+		
+		
+	})
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	function doQueryObjects(){
+    	//1.设置分页页码为1
+    	$("#pageId").data("pageCurrent",1);
+    	//2.重新执行查询操作
+    	doGetObjects();
+     }
+	
+	
+	
+	function showProvinceList() {
+		$("#down").append('<option value="0">----- 请选择 -----</option>');
+		
+		
+	    	var url="report/doFindDown.do";
+	 	   //3.ajax request
+	 	   
+	 	   $.getJSON(url,function(result){
+	 		  if(result.state==1){
+	 			var list = result.data;
+	 			for (var i = 0; i < list.length; i++) {
+	 				
+					var op = '<option value="' + list[i].id + '">' + list[i].username + '</option>';
+					$("#down").append(op);
+				}
+	 		   }else{
+	 			  var op = '<option value=""></option>';
+					$("#down").append(op);
+	 		   }
+	 	   });
+		
+	}
+	
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	function doFundByTime(){
+		 var url="report/findByTimeObjects.do";
+		 
+		 
+		
+		var params = {workTime : $("#createdTime").val()}
+		 
+		$.getJSON(url,params,function(result){
+			if(result.state==1){
+				$("#page-fenye").hide();
+				doSetTableBodyRowss(result.data);
+				
+			}else{
+					//获取body对象并清空
+				   var tBody=$("#tbodyId");
+				   tBody.empty();
+				   //创建tr对象
+				   var tr=$("<tr></tr>");
+				   //创建td对象
+				   //var len=$("table thead").find("tr").find("td").length;
+				   var len=$("table th").length;
+				   
+				   var td=$("<td></td>");
+				   td.prop("colspan",len);
+				   td.append(result.message);
+				   tr.append(td);
+				   //将tr追加到tbody
+				   tBody.append(tr);
+			}
+			
+			
+		});
+    }
+	function doSetTableBodyRowss(records){
+	
+	//获取tbody对象,并清空
+	   var tBody=$("#tbodyId");
+	   tBody.empty();
+	   //2.迭代数据,并追加到tBody
+	   for(var i=0;i<records.length;i++){
+		  //2.1构建tr对象
+		  var tr=$("<tr></tr>");
+		  tr.data("id",records[i].reportId);
+		  tr.data("name",records[i].username);
+		  //2.2构建tds对象
+		  var tds=doCreateTdss(records[i],i);
+		  //2.3将tds对象追加到tr中
+		  tr.append(tds);
+		  //2.4将tr追加到tbody中
+		  tBody.append(tr);
+	   }
+	}
+	
+	function doCreateTdss(row,i){
+		Date.prototype.toLocaleString = function() {
+	          return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " ;
+	    };
+		var unixTimestamp = new Date(row.workTime).toLocaleString();
+		workTime = unixTimestamp;
+		var id = row.reportId;
+		   var tds=
+	       	"<td>"+(parseInt(i)+1)+"</td>"+
+	       	"<td>"+workTime+"</td>"+
+	       	"<td>"+row.username+"</td>"+
+		     "<td >"+row.workToday+"</td>"+
+		     "<td >"+row.workNextDay+"</td>"+
+		     "<td>"+row.opinion+"</td>"+
+		     "<td ><a class='btn btn-modWork'>查看</a></td>"+
+		     "<td><a class='btn btn-modComment'>查看</a></td>"+
+		     "<td><a class='btn btn-particulars'>详情</a></td>";
+	       return tds;
+	      
+			
+	 }
+	
+	
+	
+	
+	
+	
+	
+	function doGetObjects(){
+		
+	   //1.params
+	   //获取在Page.html中绑定的当前页码值
+	   var pageCurrent=$("#pageId").data("pageCurrent");
+	   //假如没有值,设置初始值为1
+	   if(!pageCurrent)pageCurrent=1;
+	   //var params="pageCurrrent="+pageCurrent;
+	   var params={"pageCurrent":pageCurrent};
+	   var uid=$("#down").val();
+	   if(uid!="0"){
+		   params.userId=uid;
+		   var url="report/doFindDownPageObjects.do";
+	   }else{
+		   var url="report/doFindPageObjects.do";
+	   }
+	   
+	   //3.ajax request
+	   console.log(params);
+	   $.getJSON(url,params,function(result){
+		   
+		   doHandleResponseResult(result);
+	   });
+   }
+	function doHandleResponseResult(result){
+		
+		   if(result.state==1){
+			  doSetTableBodyRows(result.data.records);
+			  doSetPagination(result.data);
+		   }else{
+			  doSetTableBodyErrors(result.message);
+		   }
+	}
+	function doSetTableBodyErrors(message){
+		   //获取body对象并清空
+		   var tBody=$("#tbodyId");
+		   tBody.empty();
+		   //创建tr对象
+		   var tr=$("<tr></tr>");
+		   //创建td对象
+		   //var len=$("table thead").find("tr").find("td").length;
+		   var len=$("table th").length;
+		   
+		   var td=$("<td></td>");
+		   td.prop("colspan",len);
+		   td.append(message);
+		   tr.append(td);
+		   //将tr追加到tbody
+		   tBody.append(tr);
+	}
+	function doSetTableBodyRows(records){
+		   
+		  //获取tbody对象,并清空
+		   var tBody=$("#tbodyId");
+		   tBody.empty();
+		   //2.迭代数据,并追加到tBody
+		   for(var i=0;i<records.length;i++){
+			  //2.1构建tr对象
+			  var tr=$("<tr></tr>");
+			  tr.data("id",records[i].reportId);
+			  tr.data("name",records[i].username);
+			  //2.2构建tds对象
+			  var tds=doCreateTds(records[i],i);
+			  //2.3将tds对象追加到tr中
+			  tr.append(tds);
+			  //2.4将tr追加到tbody中
+			  tBody.append(tr);
+		   }
+	 }
+	function doCreateTds(row,i){
+		Date.prototype.toLocaleString = function() {
+	          return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " ;
+	    };
+		var unixTimestamp = new Date(row.workTime).toLocaleString();
+		workTime = unixTimestamp;
+		var id = row.reportId;
+		   var tds=
+	       	"<td>"+(parseInt(i)+1)+"</td>"+
+	       	"<td>"+workTime+"</td>"+
+	       	"<td>"+row.username+"</td>"+
+		     "<td>"+row.workToday.substring(0,20)+"</td>"+
+		     "<td>"+row.workNextDay.substring(0,20)+"</td>"+
+		     "<td>"+row.opinion.substring(0,20)+"</td>"+
+		     "<td><a class='btn btn-modWork'>查看</a></td>"+
+		     "<td><a class='btn btn-modComment'>查看</a></td>"+
+		     "<td><a class='btn btn-particulars'>详情</a></td>";
+	       return tds;
+	      
+			
+	 }
+	
+	
+		
+		
+    
+ 
+    
+	
+	
+	
+
+	
+	
+	function doLoadEditUI(){
+		var title;
+		title = "添加日志";
+		doLoadPageUI(title);
+	}
+	function doLoadReportUI(){
+	
+		var abc=$(this).parents("tr").data("id");
+		var url="report/doReportUI.do";
+		$("#mainContentId").load(url,function(){
+			$("#box-ids").html(abc);
+		})
+	}
+	
+	function doLoadModWorkUI(){
+	
+		var abc=$(this).parents("tr").data("id");
+		var aaa=$(this).parents("tr").data("name");
+		var url="report/doReportModWorkUI.do";
+		$("#mainContentId").load(url,function(){
+			$("#box-ids").html(abc);
+			$("#box-users").html(aaa);
+		})
+	}
+	
+	function doLoadModCommentUI(){
+	
+		var abc=$(this).parents("tr").data("id");
+		var url="report/doReportModCommentUI.do";
+		$("#mainContentId").load(url,function(){
+			$("#box-ids").html(abc);
+		})
+	}
+	
+	function doLoadPageUI(title){
+		
+		var url="report/doReportEditUI.do";
+		$("#mainContentId").load(url,function(){
+			$(".box-title").html(title);
+		})
+	}
+	
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+</script>
+
+

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dc.pro.dao.ProProductDao">
+  
+   <insert id="insertObject" parameterType="com.dc.pro.entity.ProProduct">
+       insert into product_list 
+       (productId,insuranceType,insurance,classify,status,underwrite,cooperator,agentCharge,dCCharge,putawayTime
+       ,soldOutTime,updateTime,updateContent,insurancePlan,amendsDemand,insureDemand,remarks,valid,validTime,relation) 
+       values 
+       (#{productId},#{insuranceType},#{insurance},#{classify},#{status},#{underwrite},#{cooperator},#{agentCharge},#{dCCharge},#{putawayTime}
+       ,#{soldOutTime},#{updateTime},#{updateContent},#{insurancePlan},#{amendsDemand},#{insureDemand},#{remarks},#{valid},#{validTime},#{relation})
+    </insert>
+   
+  
+  <insert id="insertUpload"
+		parameterType="com.dc.pro.entity.ProProductUpload">
+		insert into product_uploadId 
+		(uploadId,disId,site,fileName,createdTime,createdUser) 
+		values 
+		(#{uploadId},#{disId},#{site},#{fileName},getdate(),#{createdUser})
+	</insert>
+  
+  
+  
+   <update id="updateObject" 
+       parameterType="com.dc.pro.entity.ProProduct">
+         update product_list 
+         <set>
+             <if test="insuranceType!=null and insuranceType!=''">
+                insuranceType=#{insuranceType},
+             </if>
+             <if test="insurance!=null and insurance!=''">
+                insurance=#{insurance},
+             </if>
+             <if test="classify!=null and classify!=''">
+                classify=#{classify},
+             </if>
+             <if test="status!=null and status!=''">
+                status=#{status},
+             </if>
+             <if test="underwrite!=null and underwrite!=''">
+                underwrite=#{underwrite},
+             </if>
+             <if test="cooperator!=null and cooperator!=''">
+                cooperator=#{cooperator},
+             </if>
+             <if test="agentCharge!=null and agentCharge!=''">
+                agentCharge=#{agentCharge},
+             </if>
+             <if test="dCCharge!=null and dCCharge!=''">
+                dCCharge=#{dCCharge},
+             </if>
+
+             <if test="putawayTime!=null and putawayTime!=''">
+                putawayTime=#{putawayTime},
+             </if>
+             <if test="soldOutTime!=null and soldOutTime!=''">
+                soldOutTime=#{soldOutTime},
+             </if>
+             <if test="updateTime!=null and updateTime!=''">
+                updateTime=#{updateTime},
+             </if>
+             <if test="updateContent!=null and updateContent!=''">
+                updateContent=#{updateContent},
+             </if>
+             <if test="insurancePlan!=null and insurancePlan!=''">
+                insurancePlan=#{insurancePlan},
+             </if>
+             <if test="insureDemand!=null and insureDemand!=''">
+                insureDemand=#{insureDemand},
+             </if>
+             <if test="amendsDemand!=null and amendsDemand!=''">
+                amendsDemand=#{amendsDemand},
+             </if>
+             <if test="remarks!=null and remarks!=''">
+                remarks=#{remarks},
+             </if>
+             <if test="valid!=null ">
+                valid=#{valid},
+             </if>
+             <if test="validTime!=null and validTime!=''">
+                validTime=#{validTime},
+             </if>
+          </set>
+        where productId=#{productId}
+    </update>
+   
+   
+  
+   
+  
+   <select id="getRowCount"
+           resultType="int">
+       
+	        select count(*) 
+	        from product_list 
+	        where valid=1 
+	        <if test="username!=null and username!=''">
+	         and username=#{username} 
+	        </if>
+	        <if test="insuranceType!=null and insuranceType!=''">
+               and insuranceType=#{insuranceType} 
+             </if>
+	        <if test="insurance!=null and insurance!=''">
+               and insurance=#{insurance} 
+             </if>
+	        <if test="classify!=null and classify!=''">
+               and classify=#{classify} 
+             </if>
+             <if test="status!=null and status!=''">
+                and status=#{status} 
+             </if>
+             <if test="cooperator!=null and cooperator!=''">
+                and cooperator=#{cooperator} 
+             </if>
+             <if test="updateTime!=null and updateTime!=''">
+                and updateTime between #{updateTime} and DATEADD(DAY,1,#{updateTime}) 
+             </if>
+   </select>
+   
+   <select id="findPageObjects"
+           resultType="com.dc.pro.entity.ProProduct">
+           
+         select top ${pageSize} * 
+         from product_list 
+         where valid=1 and productId not in (select top ${startIndex} productId from product_list 
+         where valid=1 
+	        <if test="username!=null and username!=''">
+	         and username=#{username} 
+	        </if>
+	       <if test="insuranceType!=null and insuranceType!=''">
+               and insuranceType=#{insuranceType} 
+             </if>
+	        <if test="insurance!=null and insurance!=''">
+               and insurance=#{insurance} 
+             </if>
+	        <if test="classify!=null and classify!=''">
+               and classify=#{classify} 
+             </if>
+             <if test="status!=null and status!=''">
+                and status=#{status} 
+             </if>
+             <if test="cooperator!=null and cooperator!=''">
+                and cooperator=#{cooperator} 
+             </if>
+             <if test="updateTime!=null and updateTime!=''">
+                and updateTime between #{updateTime} and DATEADD(DAY,1,#{updateTime}) 
+             </if>
+         order by status asc,putawayTime desc) 
+	        <if test="username!=null and username!=''">
+	         and username=#{username} 
+	        </if>
+	        <if test="insuranceType!=null and insuranceType!=''">
+               and insuranceType=#{insuranceType} 
+             </if>
+	        <if test="insurance!=null and insurance!=''">
+               and insurance=#{insurance} 
+             </if>
+	        <if test="classify!=null and classify!=''">
+               and classify=#{classify} 
+             </if>
+             <if test="status!=null and status!=''">
+                and status=#{status} 
+             </if>
+             <if test="cooperator!=null and cooperator!=''">
+                and cooperator=#{cooperator} 
+             </if>
+             <if test="updateTime!=null and updateTime!=''">
+                and updateTime between #{updateTime} and DATEADD(DAY,1,#{updateTime}) 
+             </if>
+         order by status asc,putawayTime desc
+         
+   </select>
+   
+   <select id="getOldCount"
+           resultType="int">
+       
+	        select count(*) 
+	        from product_list 
+	        where valid=0 and relation=#{relation} 
+	        <if test="productId!=null and productId!=''">
+	         and productId=#{productId} 
+	        </if>
+	        
+         order by validTime desc
+             
+   </select>
+   
+   <select id="findOldObjects"
+           resultType="com.dc.pro.entity.ProProduct">
+           
+         select * 
+         from product_list 
+         where valid=0 and relation=#{relation} 
+	        <if test="productId!=null and productId!=''">
+	         and productId=#{productId} 
+	        </if>
+	        
+         order by validTime desc
+         
+   </select>
+   
+   <select id="findUpload"
+           resultType="com.dc.pro.entity.ProProductUpload">
+           
+         select * 
+         from product_uploadId 
+         where  
+         <if test="insurancePlan!=null and insurancePlan!=''">
+               uploadId in ( ${insurancePlan} )
+         </if>
+         
+         <if test="insurancePlan==null or insurancePlan==''">
+               uploadId in ('')
+         </if>
+         
+          
+         
+   </select>
+   
+   
+   
+   
+   
+   
+   
+   <select id="findObjectById"
+		resultType="com.dc.pro.entity.ProProduct">
+		select * 
+		from product_list 
+		where productId=#{productId}
+	</select>
+</mapper>

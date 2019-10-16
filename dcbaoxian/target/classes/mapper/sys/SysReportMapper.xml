@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dc.sys.dao.SysReportDao">
+
+	
+
+
+
+
+	<insert id="insertObject"
+		parameterType="com.dc.sys.entity.SysReport">
+		insert into list_report
+		(reportId,workTime,userId,workToday,workNextDay,opinion,createdTime,
+		createdUser)
+		values
+		(#{reportId},#{workTime},#{userId},#{workToday},#{workNextDay},#{opinion},getdate(),
+		#{createdUser})
+	</insert>
+	
+	
+	<insert id="insertModWork"
+		parameterType="com.dc.sys.entity.SysReportModWork">
+		insert into list_report_modWork 
+		(modifierId,reportId,modifterWork,createdTime,createdUser) 
+		values 
+		(#{modifierId},#{reportId},#{modifterWork},getdate(),#{createdUser}) 
+	</insert>
+	
+	
+	<insert id="insertModComment"
+		parameterType="com.dc.sys.entity.SysReportModComment">
+		insert into list_report_modComment 
+		(modCommentId,reportId,modifterComment,createdTime,createdUser) 
+		values 
+		(#{modCommentId},#{reportId},#{modifterComment},getdate(),#{createdUser}) 
+	</insert>
+	
+	
+	
+	
+
+	
+
+
+
+
+	<update id="updateContent"
+		parameterType="com.dc.sys.entity.SysReport">
+		UPDATE list_report SET workToday = REPLACE(workToday
+		, CHAR(10) , '&lt;br&gt;&lt;/br&gt;') 
+		where reportId=#{reportId}
+
+	</update>
+	<update id="updateExplain"
+		parameterType="com.dc.sys.entity.SysReport">
+		UPDATE list_report SET workNextDay = REPLACE(workNextDay ,
+		CHAR(10) , '&lt;br&gt;&lt;/br&gt;') 
+		where reportId=#{reportId}
+		
+
+	</update>
+
+
+	<!-- 基于id查询下属信息	List<SysReportNameVo> findDownId(@Param("userId")Integer userId); -->
+	<select id="findDown"
+		resultType="com.dc.sys.vo.SysUserDeptVo">
+		WITH T AS( 
+		    SELECT * FROM sys_users WHERE id=#{userId} 
+		    UNION ALL 
+		    SELECT a.*  FROM sys_users a INNER JOIN T ON a.parentId=T.id 
+		) SELECT * FROM T
+	</select>
+	<!-- 基于用户名查询用户信息 -->
+	<select id="findUserByUserId"
+		resultType="com.dc.sys.vo.SysReportNameVo">
+		select top ${pageSize} r.* ,a.username 
+		from list_report r 
+		left join sys_users a on r.userId =a.id 
+		where 1=1 and r.reportId not in(select top ${startIndex} reportId from
+		list_report where
+		userId=#{userId} ORDER BY workTime desc)
+		and userId=#{userId} 
+		order by workTime desc
+	</select>
+	
+	<!-- 基于id查询列表信息 -->
+	<select id="findReportByTime"
+		resultType="com.dc.sys.vo.SysReportNameVo">
+		WITH T AS( 
+		    SELECT * FROM sys_users WHERE id=#{userId} 
+		    UNION ALL 
+		    SELECT a.*  FROM sys_users a INNER JOIN T ON a.parentId=T.id 
+		) 
+		
+		
+		select r.* ,a.username 
+		from list_report r 
+		left join sys_users a on r.userId =a.id 
+		where r.userId in(SELECT id FROM T) 
+		and convert(varchar(10),r.workTime,120) = #{workTime} 
+	</select>
+	
+	<!-- 基于id查询列表信息 -->
+	<select id="findReportById"
+		resultType="com.dc.sys.vo.SysReportNameVo">
+		select r.* ,a.username 
+		from list_report r 
+		left join sys_users a on r.userId =a.id
+		where r.reportId=#{reportId} 
+	</select>
+	<!-- 基于id查询用户修改的备注信息 -->
+	<select id="findModWorkById"
+		resultType="com.dc.sys.entity.SysReportModWork">
+		select * 
+		from list_report_modWork 
+		where reportId=#{reportId} 
+		order by createdTime asc
+	</select>
+	<!-- 基于id查询主管点评的备注信息 -->
+	<select id="findModCommentById"
+		resultType="com.dc.sys.entity.SysReportModComment">
+		select * 
+		from list_report_modComment 
+		where reportId=#{reportId} 
+		order by createdTime asc
+	</select>
+		
+
+	<select id="getRowCount" resultType="int">
+		
+		select count(*)
+		from list_report
+		where userId =#{userId}
+		
+	</select>
+
+
+
+
+
+
+
+</mapper>

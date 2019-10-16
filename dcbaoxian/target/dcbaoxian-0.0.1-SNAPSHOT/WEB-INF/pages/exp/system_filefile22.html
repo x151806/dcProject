@@ -1,0 +1,118 @@
+
+ <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+      <h1>文件详情
+        <small>Preview</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="#">Forms</a></li>
+        <li class="active">文件详情</li>
+      </ol>
+      
+    </section>
+ <section  class="content container-fluid">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+			
+				<h3 class="box-title">查询列表</h3> 
+				<div class="box-tools">
+				
+					<div class="input-group input-group-sm" style="width: 350px;">
+					
+						<input type="text" name="table_search" id="searchNameId"
+							class="form-control pull-right" placeholder="用户名">
+
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default btn-search">
+                                <i class="fa fa-search"></i>
+							</button>
+							<button type="button" class="btn btn-default btn-add">添加</button>
+							
+							<button type="button" class="btn btn-default btn-delete">删除</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover" border="0">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="checkAll" checked="checked">全选</th>
+							<th>序号</th>
+							<th>分享人</th>
+							<th>技术名称</th>
+							<th>文档</th>
+						</tr>
+					</thead>
+					<tbody id="tbodyId">
+					    <tr>
+					    	<th><input type='checkbox' class='cBox' name='cItem' value='row.a1'></th>
+					     	<th>1</th>
+							<th>百里玄策</th>
+							<th>VUE框架</th>
+							<th><a id="a1">查看</a></th>
+					    </tr>
+					    <tr>
+					    	<th><input type='checkbox' class='cBox' name='cItem' value='row.a2'></th>
+					     	<th>2</th>
+							<th>马可波罗</th>
+							<th>redis分析与使用</th>
+							<th><a>查看</a></th>
+					    </tr>
+					</tbody>
+					
+				</table>
+			</div>
+			<div id="pageId" class="box-footer clearfix">
+			
+			</div>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+ </section>
+<script type="text/javascript">
+$(function(){
+	
+	//按钮事件注册
+    $(".input-group-btn")
+  	.on("click",".btn-add",doLoadEditUI);
+	
+    $("#tbodyId")
+	.on("click","#a1",doDetails)
+	
+})
+
+
+
+
+
+function doDetails(){
+	var url="submit/doShareDetailsUI.do"
+		$("#mainContentId").load(url,function(){
+		
+	}) 
+}
+function doLoadEditUI(){
+	var url="submit/doShareEditUI.do"
+		$("#mainContentId").load(url,function(){
+		
+	}) 
+}
+
+
+
+
+
+
+</script>
+
+
+
+

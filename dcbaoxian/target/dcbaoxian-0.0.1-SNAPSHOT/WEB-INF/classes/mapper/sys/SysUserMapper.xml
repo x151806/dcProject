@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dc.sys.dao.SysUserDao">
+
+   <!-- 基于用户名查询用户信息 -->
+   <select id="findLikeName"
+           resultType="com.dc.sys.entity.SysUser" parameterType="String">
+         select *
+         from sys_users 
+         
+   </select>
+   
+   <!-- 基于用户名查询用户信息 -->
+   <select id="findUserByUserName"
+           resultType="com.dc.sys.entity.SysUser">
+         select *
+         from sys_users
+         where username=#{username}
+   </select>
+   
+
+   <!-- 更新用户自身信息 -->
+   <update id="updateObject" 
+           parameterType="com.dc.sys.entity.SysUser">
+          update sys_users
+          <set>
+             <if test="username!=null and username!=''">
+               username=#{username},
+             </if>
+             <if test="email!=null and email!=''">
+                  email=#{email},
+             </if>
+             <if test="mobile!=null and mobile!=''">
+                mobile=#{mobile},
+             </if>
+             <if test="deptId!=null and deptId!=''">
+                deptId=#{deptId},
+             </if>
+             <if test="parentId!=null and parentId!=''">
+                parentId=#{parentId},
+             </if>
+
+             <if test="modifiedUser!=null and modifiedUser!=''">
+                modifiedUser=#{modifiedUser},
+             </if>
+             modifiedTime=getdate()
+          </set>
+          where id=#{id}      
+   </update>
+
+
+   <insert id="insertObject"
+           parameterType="com.dc.sys.entity.SysUser">
+      <!-- 
+        selectKey这个元素一般用于获取一个主键值，
+                其中：
+        1)order表示selectKey中的sql语句何时执行
+        2)keyProperty表示selectKey执行结果赋值
+                给参数对象中的哪个数据(一般与set方法匹配)
+        3)last_insert_id()为mysql内置的一个函数
+                其作用是获取最后一个自增长的那个id值        
+       --> 
+      <selectKey keyProperty="id"
+                 order="AFTER"
+                 resultType="int">
+            select 
+            IDENT_CURRENT('sys_users')
+      </selectKey> 
+        
+      insert into sys_users
+       (username,password,deptId,parentId,email,mobile,salt,valid,
+       createdTime,modifiedTime,createdUser,modifiedUser)
+      values
+       (#{username},#{password},#{deptId},#{parentId},#{email},#{mobile},#{salt},#{valid},
+       getdate(),getdate(),#{createdUser},#{modifiedUser})
+   </insert>
+  
+   
+   <!-- 禁用，启用用户状态信息 -->
+   <update id="validById">
+       update sys_users
+       set valid=#{valid},
+           modifiedUser=#{modifiedUser},
+           modifiedTime=getdate()
+       where id=#{id}
+   </update>
+   
+ 
+   <sql id="queryWhereId">
+      <where>
+        <if test="username!=null and username!=''">
+        username like '%' + #{username} + '%'
+        </if>
+       
+      </where>
+   </sql>
+  
+   <select id="getRowCount" resultType="int">
+        select count(*)
+        from sys_users
+        <include refid="queryWhereId"/>
+   </select>
+   
+   <!-- 基于用户id查询用户以及用户对应的部门信息 -->
+   <select id="findObjectById"
+           resultType="com.dc.sys.vo.SysUserDeptVo">
+        select b.*,c.name sysDept,c.id deptId 
+        from sys_users b 
+        left join sys_depts c on c.id=b.deptId 
+        where b.id=#{id} 
+   </select>
+   
+   <!-- 基于用id查询上级信息 -->
+   <select id="findUserById"
+           resultType="com.dc.sys.entity.SysUser">
+        select username sysParent
+                     from sys_users  
+                     where id=(select parentId
+                     from sys_users  
+                     where id=#{id})
+   </select>
+   
+   <resultMap type="com.dc.sys.vo.SysUserDeptVo" 
+              id="sysUserDeptVo">
+            <!-- 
+            1)association 用于定义关联查询
+            2)association 应用场景:many2one or one2one-->
+            <association property="sysDept"
+                         column="deptId"
+                         select="com.dc.sys.dao.SysDeptDao.findById">
+            </association> 
+   </resultMap>
+   
+   <select id="findPageObjects"
+           resultType="com.dc.sys.vo.SysUserDeptVo">
+         select top ${pageSize} b.*,a.username sysParent,c.name sysDept
+         from sys_users b 
+         left join sys_users a on a.id=b.parentId 
+         left join sys_depts c on c.id=b.deptId  
+         
+         where 1=1 and b.id not in (select top ${startIndex} id from sys_users ORDER BY createdTime desc)
+         <if test="username!=null and username!=''">
+         and b.username like '%' + #{username} + '%'
+        </if>
+         order by createdTime desc
+   </select>
+
+</mapper>

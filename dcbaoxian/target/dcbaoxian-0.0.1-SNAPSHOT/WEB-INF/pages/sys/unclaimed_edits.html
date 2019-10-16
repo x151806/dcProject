@@ -1,0 +1,224 @@
+<!-- Horizontal Form -->
+<div class="box box-info">
+	<div class="box-header with-border">
+		<h3 class="box-title">添加日报</h3>
+	</div>
+	<!-- /.box-header -->
+	<!-- form start -->
+	<form class="form-horizontal" >
+		<div class="box-body">
+		
+				<div class="col-md-12">
+					
+					<div class="form-group">
+						<label  class="col-sm-4 control-label">会议类型</label>
+						<div class="col-sm-8">
+							<div class="col-sm-4">
+								<input id="meeting" class="col-sm-4 form-control" list="cars" />
+								<datalist id="cars">
+								</datalist>
+							</div>
+							<label class="col-sm-4 control-label">规定完成时间</label>
+							<div class="col-sm-4">
+								<input type="date" class="form-control" name="time" id="appointedTime">
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label  class="col-sm-4 control-label">任务内容</label>
+
+						<div class="col-sm-8">
+							<textarea rows="7" cols="20" class="form-control"
+								placeholder="1、...2、....3、...." name="tasks"
+								id="task"></textarea>
+						</div>
+					</div>
+					
+					
+					
+					
+					<div class="form-group">
+						<label  class="col-sm-4 control-label">执行人</label>
+
+						<div class="col-sm-8">
+						<select id="executor" name="executor" class="form-control"></select>
+						</div>
+					</div>
+					
+						
+				
+			</div>
+		
+				
+
+
+
+			<!-- /.box-body -->
+			<div class="col-md-12">
+				<div class="box-footer">
+					<button type="button" class="btn btn-default btn-cancel">返回</button>
+					<button type="button" class="btn btn-info pull-right btn-save">提交</button>
+				</div>
+			</div>
+			<!-- /.box-footer -->
+		</div>
+	</form>
+</div>
+
+
+
+<!-- jQuery 3 -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Select2 -->
+<script src="bower_components/select2/dist/js/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="plugins/input-mask/jquery.inputmask.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- date-range-picker -->
+<script src="bower_components/moment/min/moment.min.js"></script>
+<script
+	src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script
+	src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap color picker -->
+<script
+	src="bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<!-- SlimScroll -->
+<script
+	src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="plugins/iCheck/icheck.min.js"></script>
+<!-- FastClick -->
+<script src="bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+
+
+
+
+<script type="text/javascript">
+    
+    $(function(){
+    	 
+    	showProvinceList();
+    	showCommonList();
+    	$(".box-footer")
+    	.on("click",".btn-save",doSave)
+    	.on("click",".btn-cancel",doCancel);
+    	
+    	
+    });
+    
+    function showProvinceList() {
+		$("#executor").append('<option value="">----- 请选择 -----</option>');
+		
+		
+	    	var url="report/doFindDown.do";
+	 	   //3.ajax request
+	 	   
+	 	   $.getJSON(url,function(result){
+	 		  if(result.state==1){
+	 			var list = result.data;
+	 			for (var i = 0; i < list.length; i++) {
+	 				
+					var op = '<option value="' + list[i].username + '">' + list[i].username + '</option>';
+					$("#executor").append(op);
+				}
+	 		   }else{
+	 			  var op = '<option value=""></option>';
+					$("#executor").append(op);
+	 		   }
+	 	   });
+		
+	}
+	
+    function showCommonList() {
+		$("#cars").append('<option value="">----- 请选择 -----</option>');
+		
+		var params = {type : 1}
+	    	var url="mis/findCommonObject.do";
+	 	   //3.ajax request
+	 	   
+	 	   $.getJSON(url,params,function(result){
+	 		  if(result.state==1){
+	 			var list = result.data;
+	 			for (var i = 0; i < list.length; i++) {
+	 				
+					var op = '<option value="' + list[i].details + '">' + list[i].details + '</option>';
+					$("#cars").append(op);
+				}
+	 		   }else{
+	 			  var op = '<option value=""></option>';
+					$("#cars").append(op);
+	 		   }
+	 	   });
+		
+	}
+	
+    
+    
+   
+    
+    function doCancel(){
+    	var url="mis/doUnclaimedListUI.do";
+    	$("#mainContentId")
+    	.load(url,function(){
+    	  $("#mainContentId").removeData();
+    	});
+    }
+    
+    
+    function doSave(){
+    	
+    	if($("#meeting").val()==""){
+    		alert('请选择会议类型！');
+    		return;
+    	}
+    	//1.参数(表单数据)
+    	var params=doGetEditFormData();
+    	
+    	var url="mis/doSaveObject.do"; 
+    	console.log(params);
+    	
+    	//3.ajax request
+    	$.post(url,params,function(result){
+  		  if(result.state==1){
+  			  alert(result.message);
+  		  }else{
+  			  alert(result.message);
+  		  }
+  	  });
+    }
+    function doGetEditFormData(){
+    	
+    	var params = {
+    			
+    			meeting : $("#meeting").val(),
+    			task : $("#task").val(),
+    			executor : $("#executor").val(),
+    			appointedTime : $("#appointedTime").val()
+    			
+    			
+    			
+			}
+    	return params;
+    }
+    
+
+</script>
+
+
+
+
+
+
+
