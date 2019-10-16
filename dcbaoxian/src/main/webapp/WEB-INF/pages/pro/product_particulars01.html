@@ -1,0 +1,746 @@
+<!-- Content Wrapper. Contains page content -->
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		产品详情 <small>Preview</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+
+		<li class="active">产品详情</li>
+		
+	</ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<!-- SELECT2 EXAMPLE -->
+	<div class="box box-default">
+		<div class="box-header with-border">
+			<h3 class="box-title"></h3>
+			<div id="box-ids" class="box-title" style="display:none;"></div>
+			<h4 id="abc-ids" ></h4>
+			<div class="box-tools pull-right">
+				<!-- 最小化 -->
+				<button type="button" class="btn btn-box-tool"
+					data-widget="collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+				<!-- 关闭 -->
+				<button type="button" class="btn btn-box-tool" data-widget="remove">
+					<i class="fa fa-remove"></i>
+				</button>
+			</div>
+		</div>
+		<!-- /.box-header -->
+		<div class="box-body">
+		
+			<div class="row">
+			
+			<div class="col-lg-2" id="mk01">
+			</div>
+			<div class="col-lg-8" id="mk02">
+			
+				<div class="box-body table-responsive no-padding">
+				<div style="height: 30px;"></div>
+				
+				<table class="table table-bordered " >
+				
+				
+					<caption><h3>保险产品详情 </h3></caption>
+					<tr >
+						<td style="width: 120px;"><b>险种名称：</b></td>
+						<td><span id="insurance"></span></td>
+						<td style="width: 120px;"><b>险种类型：</b></td>
+						<td><span id="insuranceType"></span></td>
+						<td style="width: 120px;"><b>险种状态：</b></td>
+						<td><span id="classify"></span></td>
+						
+					</tr>
+					<tr>
+						<td><b>承保公司：</b></td>
+						<td><span id="underwrite"></span></td>
+						<td><b>有效状态：</b></td>
+						<td><span id="status"></span></td>
+						<td><b>代理人手续费：</b></td>
+						<td><span id="agentCharge"></span></td>
+					</tr>
+					<tr>
+						<td><b>上架时间：</b></td>
+						<td><span id="putawayTime"></span></td>
+						<td><b>下架时间：</b></td>
+						<td><span id="soldOutTime"></span></td>
+						<td><b>更新时间：</b></td>
+						<td><span id="updateTime"></span></td>
+					</tr>
+					
+					<tr>
+						<td><b>更新内容：</b></td>
+						<td colspan="5"><span id="updateContent"></span></td>
+					</tr>
+					<tr>
+						<td colspan="1"><b>保险方案：</b></td>
+						<td colspan="5">
+							<table class="table" >
+								<tbody id="tbodyId">
+								</tbody>
+								
+							</table>
+						</td>
+					
+					</tr>
+					<tr>
+						<td colspan="1" style="vertical-align:middle;"><b>投保要求：</b></td>
+						<td colspan="5"><span id="insureDemand"></span></td>
+					</tr>
+					
+					<tr>
+						<td colspan="1" style="vertical-align:middle;"><b>理赔要求：</b></td>
+						<td colspan="5" id="amendsDemand"><span></span></td>
+					</tr>
+					<tr>
+						<td colspan="1" style="vertical-align:middle;"><b>备注：</b></td>
+						<td colspan="5" id="remarks"><span></span></td>
+					</tr>
+					
+					
+				</table>
+				</div>
+			</div>
+			<div class="col-lg-2" id="mk03" >
+				
+				<div class="box-body table-responsive no-padding" id="findoldId" style="display:none;">
+				<!-- 关闭 -->
+				<button type="button" class="btn btn-box-tool pull-right btn-002" data-widget="remove">
+					<i class="fa fa-remove"></i>
+				</button>
+				<table class="table table-bordered " >
+				
+				
+					<caption><h3>失效产品详情 </h3></caption>
+					<tr >
+						<td style="width: 120px;"><b>险种名称：</b></td>
+						<td><span id="insurance2"></span></td>
+						<td style="width: 120px;"><b>险种类型：</b></td>
+						<td><span id="insuranceType2"></span></td>
+						<td style="width: 120px;"><b>险种状态：</b></td>
+						<td><span id="classify2"></span></td>
+						
+						
+					</tr>
+					<tr>
+						<td><b>承保公司：</b></td>
+						<td><span id="underwrite2"></span></td>
+						<td><b>有效状态：</b></td>
+						<td><span id="status2"></span></td>
+						<td><b>代理人手续费：</b></td>
+						<td><span id="agentCharge2"></span></td>
+						
+					</tr>
+					<tr>
+						<td><b>上架时间：</b></td>
+						<td><span id="putawayTime2"></span></td>
+						<td><b>下架时间：</b></td>
+						<td><span id="soldOutTime2"></span></td>
+						<td><b>更新时间：</b></td>
+						<td><span id="updateTime2"></span></td>
+					</tr>
+					
+					
+					
+					<tr>
+						<td><b>更新内容：</b></td>
+						<td colspan="5"><span id="updateContent2"></span></td>
+					</tr>
+					<tr>
+						<td colspan="1"><b>保险方案：</b></td>
+						<td colspan="5">
+							<table class="table" >
+								<tbody id="tbodyId3">
+								</tbody>
+								
+							</table>
+						</td>
+					
+					</tr>
+					<tr>
+						<td colspan="1" style="vertical-align:middle;"><b>投保要求：</b></td>
+						<td colspan="5"><span id="insureDemand2"></span></td>
+					</tr>
+					
+					<tr>
+						<td colspan="1" style="vertical-align:middle;"><b>理赔要求：</b></td>
+						<td colspan="5" id="amendsDemand2"><span></span></td>
+					</tr>
+					<tr>
+						<td colspan="1" style="vertical-align:middle;"><b>备注：</b></td>
+						<td colspan="5" id="remarks2"><span></span></td>
+					</tr>
+					
+					
+				</table>
+				</div>
+			</div>
+
+				
+				
+				 <div class="layui-layer layui-layer-page layui-layer-molv layer-anim" id="treeLayer" type="page" times="2" showtime="0" contype="object"
+				style=" height: 700px; top: 0px; position: absolute; margin: 0 auto; display:none;z-index:999">
+				<div class="layui-layer-title" style="cursor: move;">查看图片</div>
+				<div class="layui-layer-content" style="height: 600px;width: 1300px">
+
+					<div class="box box-info">
+					<div class="box-header with-border">
+						<h3 class="box-title">进度记录</h3>
+					</div>
+						
+					<!-- /.box-header -->
+					<!-- form start -->
+					
+						
+					<!-- /.box-header -->
+							<div id="imgdiv" class="box-body table-responsive no-padding">
+								
+					        
+					        
+							</div>
+							
+					</div>
+
+
+				</div>
+				
+				<span class="layui-layer-setwin"> <a class="layui-layer-ico layui-layer-close layui-layer-close1 btn-cancel" ></a></span>
+				
+		   </div>
+				
+				
+				
+				
+				
+			<div class="col-md-12" id="btn-one">
+		          <button class="btn btn-info pull-left btn-primary" id="btn-show" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+					 更新列表
+					</button>	
+    		 </div>
+    		 <div style="height: 50px;"></div>
+    		 <div class="col-md-12">
+			<div class="collapse" id="collapseExample">
+		  <div class="well">
+			  
+			    	<table class="table table-hover table-striped table-bordered" >
+						<thead>
+							<tr class="info">
+								<th>序号</th>
+								<th>失效时间</th>
+								<th>更新内容</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="tbodyId2">
+						    <tr>
+						     <td colspan="4">数据正在加载中........................................</td>
+						    </tr>
+						</tbody>
+					</table>
+		  </div>
+		</div>
+		</div>	
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+
+
+
+				<!-- /.col -->
+				<div class="col-md-12">
+					<div class="box-footer">
+						<button type="button" class="btn btn-info pull-right btn-save">返回</button>
+						
+					</div>
+				</div>
+		
+
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.box-body -->
+
+	</div>
+	<!-- /.box -->
+
+</section>
+
+
+<style>
+    table.table tr td {
+        border: 1px solid #B3B8D9; /* 整体表格边框 */
+    }
+    
+</style>
+
+<script>
+  $(function () {
+	  dogetobject();
+	  
+	  
+	  $(".box-footer")
+	  .on("click",".btn-save",doSave)
+	  
+	  $("#mk03")
+	  .on("click",".btn-002",domk02)
+   
+	  $("#tbodyId")
+	  .on("click",".btn-findfile",doFindfile)
+	  $("#tbodyId3")
+	  .on("click",".btn-findfile",doFindfile)
+	  
+	  $(".layer-anim")
+	  .on("click",".btn-cancel",doCancelimg)
+	  
+	  $("#btn-one")
+	.on("click","#btn-show",dofindDown)
+	  
+	  $("#tbodyId2")
+	  .on("click",".btn-old",doFindOld)
+	  
+  })
+  
+ function domk01(){
+	//显示div
+	  $("#findoldId").css("display", "block");
+	  $('#mk01').removeClass('col-lg-2');
+	  $('#mk02').removeClass('col-lg-8').addClass('col-lg-6');
+	  $('#mk03').removeClass('col-lg-2').addClass('col-lg-6');
+  }
+  
+ function domk02(){
+	
+	  $("#findoldId").css("display", "none");
+	  $('#mk01').addClass('col-lg-2');
+	  $('#mk02').removeClass().addClass('col-lg-8');
+	  $('#mk03').removeClass().addClass('col-lg-2');
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  function doProgressUI() {
+	//显示div
+	$("#treeLayer").css("display", "block");
+	
+}
+  function doCancelimg() {
+	$("#treeLayer").css("display", "none");
+	$("#imgId").remove();
+}  
+  
+  
+  
+  
+  
+function doFindfile(){
+	  var aaa=$(this).parents("td").data("site");
+	  var bbb=$(this).parents("td").data("fileName");
+	//获取最后一个.的位置
+	  var index= aaa.lastIndexOf(".");
+	  //获取后缀
+	  var ext = aaa.substr(index+1);
+	  //判断是否为图片
+	  var panduan=isAssetTypeAnImage(ext);
+	  
+		//获取文件全部名字
+	  var aass = aaa.substr(35);
+	  if(panduan){
+		  doProgressUI();
+		  $("#imgdiv").append('<img  id="imgId" src="/pro/'+aass+'" style="display:block;" />');
+	  }else{
+		  	var a=aaa;
+			var b=bbb;
+			a=encodeURI(encodeURI(a));
+			b=encodeURI(encodeURI(b));
+			
+			
+			window.location="product/download.do?site="+a+"&filename="+b+"&uploadId=";
+		  
+	  }
+	  
+	
+}
+function isAssetTypeAnImage(ext) {
+	  return [
+	  'png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff'].
+	  indexOf(ext.toLowerCase()) !== -1;
+}
+  
+function dogetTable(){
+	var lan="";
+	   lan=$("#abc-ids").data("aaasa");
+    	var ids={insurancePlan : lan};
+    	var url="product/findUploads.do";
+ 	   //3.ajax request
+ 	   
+ 	   $.getJSON(url,ids,function(result){
+ 		  doHandleResponseResult(result);
+ 	   });
+    }
+    
+    function doHandleResponseResult(result){
+		   
+    	if(result.state==1){
+  		  doSetTableBodyRows(result.data);
+  		  doSetPagination(result.data);
+  	   }else{
+  	   }
+	}
+  //将记录呈现在table对象的tbody中
+    function doSetTableBodyRows(records){
+    	 //获取tbody对象,并清空
+ 	   var tBody=$("#tbodyId");
+ 	  
+ 	   //2.迭代数据,并追加到tBody
+ 	   var xx=0;
+ 	   xx=records.length;
+ 	   var num = Math.ceil(records.length/3);
+ 	   
+ 	   
+ 	   for(var i=0;i<num;i++){
+ 		  	var add=(i+1)*3;
+ 		  	if(add>xx){
+ 				add=xx;
+ 		  	}
+ 		  	var tr=$("<tr></tr>");
+ 		 	var p=i*3;
+ 		 	
+ 		 	for(var m =p;m<add;m++){
+ 		 		
+ 		 		var td=$("<td style='border:0;'></td>");
+ 		 		td.data("site",records[m].site);
+ 		 		td.data("fileName",records[m].fileName);
+ 		 		
+ 		 		var tds="<a class='btn-findfile'>"+records[m].fileName+"</a>";
+ 		 		  //2.3将tds对象追加到tr中
+ 		 		td.append(tds);
+ 		 		tr.append(td);
+ 		 	}
+ 		 	 
+	 		  //2.4将tr追加到tbody中
+	 		tBody.append(tr);
+ 		}  
+ 		   
+ 		   
+    }
+	
+  
+  
+ 
+  
+  
+  
+  
+  
+function dogetobject() {
+	
+	  var id=$("#box-ids").data("rowData");
+	  console.log(id);
+	  var params={"productId":id};
+		 //2.定义请求的url
+		 var url="product/findObjectById.do";
+		 //3.发送异步请求执行查询(浏览器会启动一个工作线程)
+		 //服务端数据返回以后会回调匿名函数，并将结果传递给
+		 //result变量(名字无所谓)
+		 
+		 	$.getJSON(url,params,function(result){//JsonResult
+			 	if(result.state==1){
+			 		console.log(result.data);
+			 		doCreatedata(result.data);
+			 		dogetTable();
+			  	}else{
+				  	alert(result.message);
+				}
+			});
+}
+	
+  function doCreatedata(row){
+	  Date.prototype.toLocaleString = function() {
+	        return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " ;
+	  	};
+		
+		var putawayTime = "";
+		if(row.putawayTime){
+			putawayTime = new Date(row.putawayTime).toLocaleString();
+		}
+	  
+		var soldOutTime = "";
+		if(row.soldOutTime){
+			soldOutTime = new Date(row.soldOutTime).toLocaleString();
+		}
+	  
+		var updateTime = "";
+		if(row.updateTime){
+			updateTime = new Date(row.updateTime).toLocaleString();
+		}
+		$("#abc-ids").data("aaasa",row.insurancePlan);
+		$("#box-ids").data("relation",row.relation);
+		
+		
+	  	$("#insuranceType").html(row.insuranceType);
+	  	$("#insurance").html(row.insurance);
+	  	$("#classify").html(row.classify);
+		$("#underwrite").html(row.underwrite);
+		$("#status").html(row.status);
+		$("#agentCharge").html(row.agentCharge);
+		$("#putawayTime").html(putawayTime);
+		$("#soldOutTime").html(soldOutTime);
+		$("#updateTime").html(updateTime);
+		$("#updateContent").html(row.updateContent);
+		$("#insureDemand").html(row.insureDemand);
+		$("#amendsDemand").html(row.amendsDemand);
+		$("#remarks").html(row.remarks);
+	  
+  }
+  
+  
+  function doFindOld() {
+	  domk01();
+	  var id=$(this).parents("tr").data("pid");
+	  console.log(id);
+	  var params={"productId":id};
+		 //2.定义请求的url
+		 var url="product/findObjectById.do";
+		 //3.发送异步请求执行查询(浏览器会启动一个工作线程)
+		 //服务端数据返回以后会回调匿名函数，并将结果传递给
+		 //result变量(名字无所谓)
+		 
+		 	$.getJSON(url,params,function(result){//JsonResult
+			 	if(result.state==1){
+			 		console.log(result.data);
+			 		doCreatedata2(result.data);
+			 		dogetTable2();
+			  	}else{
+				  	alert(result.message);
+				}
+			});
+}
+	
+  function doCreatedata2(row){
+	  Date.prototype.toLocaleString = function() {
+	        return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " ;
+	  	};
+		
+		var putawayTime = "";
+		if(row.putawayTime){
+			putawayTime = new Date(row.putawayTime).toLocaleString();
+		}
+	  
+		var soldOutTime = "";
+		if(row.soldOutTime){
+			soldOutTime = new Date(row.soldOutTime).toLocaleString();
+		}
+	  
+		var updateTime = "";
+		if(row.updateTime){
+			updateTime = new Date(row.updateTime).toLocaleString();
+		}
+		$("#abc-ids").data("insurancePlan2",row.insurancePlan);
+		
+		
+	  	$("#insuranceType2").html(row.insuranceType);
+	  	$("#insurance2").html(row.insurance);
+	  	$("#classify2").html(row.classify);
+		$("#underwrite2").html(row.underwrite);
+		$("#status2").html(row.status);
+		$("#agentCharge2").html(row.agentCharge);
+		$("#putawayTime2").html(putawayTime);
+		$("#soldOutTime2").html(soldOutTime);
+		$("#updateTime2").html(updateTime);
+		$("#updateContent2").html(row.updateContent);
+		$("#insureDemand2").html(row.insureDemand);
+		$("#amendsDemand2").html(row.amendsDemand);
+		$("#remarks2").html(row.remarks);
+	  
+  }
+  
+  
+  
+  
+  function dogetTable2(){
+		var lan=$("#abc-ids").data("insurancePlan2");
+	    	var ids={insurancePlan : lan};
+	    	var url="product/findUploads.do";
+	 	   //3.ajax request
+	 	   
+	 	   $.getJSON(url,ids,function(result){
+	 		  doHandleResponseResultss(result);
+	 	   });
+	    }
+	    
+	    function doHandleResponseResultss(result){
+			   
+	    	if(result.state==1){
+	  		  doSetTableBodyRowsss(result.data);
+	  	   }else{
+	  	   }
+		}
+	  //将记录呈现在table对象的tbody中
+	    function doSetTableBodyRowsss(records){
+	    	 //获取tbody对象,并清空
+	 	   var tBody=$("#tbodyId3");
+	 	  tBody.empty();//清空
+	 	   //2.迭代数据,并追加到tBody
+	 	   var xx=0;
+	 	   xx=records.length;
+	 	   var num = Math.ceil(records.length/3);
+	 	   
+	 	   
+	 	   for(var i=0;i<num;i++){
+	 		  	var add=(i+1)*3;
+	 		  	if(add>xx){
+	 				add=xx;
+	 		  	}
+	 		  	var tr=$("<tr></tr>");
+	 		 	var p=i*3;
+	 		 	
+	 		 	for(var m =p;m<add;m++){
+	 		 		
+	 		 		var td=$("<td style='border:0;'></td>");
+	 		 		td.data("site",records[m].site);
+	 		 		td.data("fileName",records[m].fileName);
+	 		 		
+	 		 		var tds="<a class='btn-findfile'>"+records[m].fileName+"</a>";
+	 		 		  //2.3将tds对象追加到tr中
+	 		 		td.append(tds);
+	 		 		tr.append(td);
+	 		 	}
+	 		 	 
+		 		  //2.4将tr追加到tbody中
+		 		tBody.append(tr);
+	 		}  
+	 		   
+	 		   
+	    }
+  
+  
+
+function doSave(){
+		
+	$("#mainContentId").load("product/doProductUI.do");
+}
+	 
+	 
+	 
+	 
+	 
+	 
+function dofindDown(){
+	var rel=$("#box-ids").data("relation");
+	 
+	 console.log(rel);
+	 var params={relation : rel};
+		var url="product/findOldObjects.do";
+		   //3.ajax request
+		   
+		   $.getJSON(url,params,function(result){
+			  doHandleResponseResult2(result);
+		   });	
+		
+}
+
+function doHandleResponseResult2(result){
+	   
+		if(result.state==1){
+			  doSetTableBodyRows2(result.data);
+		   }else{
+			  doSetTableBodyErrors2(result.message);
+		   }
+	}
+	function doSetTableBodyErrors2(message){
+		   //获取body对象并清空
+		   var tBody=$("#tbodyId2");
+		   tBody.empty();
+		   //创建tr对象
+		   var tr=$("<tr></tr>");
+		   //创建td对象
+		   //var len=$("table thead").find("tr").find("th").length;
+		   var len=$("table th").length;
+		   var td=$("<td></td>");
+		   td.prop("colspan",len);
+		   td.append(message);
+		   tr.append(td);
+		   //将tr追加到tbody
+		   tBody.append(tr);
+	}
+	//将记录呈现在table对象的tbody中
+	function doSetTableBodyRows2(records){
+		 //获取tbody对象,并清空
+		   var tBody=$("#tbodyId2");
+		   tBody.empty();
+		   //2.迭代数据,并追加到tBody
+		   for(var i=0;i<records.length;i++){
+			  //2.1构建tr对象
+			  var tr=$("<tr></tr>");
+			  tr.data("pid",records[i].productId);
+			  //2.2构建tds对象
+			  var tds=doCreateTds2(records[i],i);
+			  //2.3将tds对象追加到tr中
+			  tr.append(tds);
+			  //2.4将tr追加到tbody中
+			  tBody.append(tr);
+		   }
+	}
+	function doCreateTds2(row,i){
+		Date.prototype.toLocaleString = function() {
+	          return this.getFullYear() + "/" + (this.getMonth() + 1) + "/" + this.getDate() + "/ " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+	    };
+		var unixTimestamp = new Date(row.validTime);
+		downTime = unixTimestamp.toLocaleString();
+		
+		var updateContent="";
+		if(row.updateContent){
+			updateContent=row.updateContent;
+		}
+		
+		
+		   var tds=
+	       	"<td>"+(parseInt(i)+1)+"</td>"+
+	       	"<td>"+downTime+"</td>"+
+	       	"<td>"+updateContent+"</td>"+
+	       	"<td><a class='btn btn-old'>详情</a></td>";
+	       return tds;
+	 }
+
+
+ 
+	 
+
+
+</script>
+</body>
+</html>

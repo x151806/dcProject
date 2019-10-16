@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dc.exp.dao.ExpMissionDao">
+  
+   <insert id="insertobject" parameterType="com.dc.exp.entity.ExpMission">
+       insert into mission_distribution 
+       (missionId,createdTime,meeting,task,satrap,executor,appointedTime,status,claimTime,remarkContent,remarkSatrap,fixedTime) 
+       values 
+       (#{missionId},getdate(),#{meeting},#{task},#{satrap},#{executor},#{appointedTime} 
+       ,#{status},#{claimTime},#{remarkContent},#{remarkSatrap},getdate()) 
+    </insert>
+   
+   <insert id="insertProgress" parameterType="com.dc.exp.entity.ExpProgress">
+       insert into mission_progress 
+       (progressId,disId,progress,createdTime,createdUser)
+       values
+       (#{progressId},#{disId},#{progress},getdate(),#{createdUser})
+    </insert>
+   
+   <!-- 基于id执行日志删除 -->
+   <delete id="deleteObjects">
+      
+      delete from mission_distribution
+      where missionId in <!-- (1,2,3,4,5) -->
+      <foreach collection="ids"
+               open="("
+               close=")"
+               separator=","
+               item="missionId">
+            ${missionId}
+      </foreach>
+   
+   </delete>
+   <delete id="deleteProgress">
+      
+      delete from mission_progress
+      where disId in <!-- (1,2,3,4,5) -->
+      <foreach collection="ids"
+               open="("
+               close=")"
+               separator=","
+               item="disId">
+            ${disId}
+      </foreach>
+   
+   </delete>
+   <update id="updateMission" 
+       parameterType="com.dc.exp.entity.ExpMission">
+         update mission_distribution
+         <set>
+             
+             <if test="meeting!=null and meeting!=''">
+                meeting=#{meeting},
+             </if>
+             <if test="task!=null and task!=''">
+                task=#{task},
+             </if>
+             <if test="satrap!=null and satrap!=''">
+                satrap=#{satrap},
+             </if>
+             <if test="executor!=null and executor!=''">
+                executor=#{executor},
+             </if>
+
+             <if test="appointedTime!=null and appointedTime!=''">
+                appointedTime=#{appointedTime},
+             </if>
+             <if test="createdTime!=null and createdTime!=''">
+                createdTime=#{createdTime},
+             </if>
+          </set>
+        where missionId=#{missionId}
+    </update>
+   
+   <update id="updateObjects" 
+       parameterType="com.dc.exp.entity.ExpMission">
+         update mission_distribution
+         set
+           status=2,
+           claimTime=getdate() 
+        where missionId in <!-- (1,2,3,4,5) -->
+      <foreach collection="ids"
+               open="("
+               close=")"
+               separator=","
+               item="missionId">
+            ${missionId}
+      </foreach>
+    </update>
+   
+   <update id="updateRemark" 
+       parameterType="com.dc.exp.entity.ExpMission">
+         update mission_distribution
+         set
+           remarkContent=#{remarkContent},
+           remarkSatrap=#{remarkSatrap} 
+        where missionId=#{missionId}
+    </update>
+   
+   <update id="updateStatus" 
+       parameterType="com.dc.exp.entity.ExpMission">
+         update mission_distribution
+         set
+           status=#{status} 
+        where missionId=#{missionId}
+    </update>
+   
+   
+   
+  
+   <select id="getRowCount"
+           resultType="int">
+        WITH T AS( 
+		    SELECT * FROM sys_users WHERE username=#{username} 
+		    UNION ALL 
+		    SELECT a.*  FROM sys_users a INNER JOIN T ON a.parentId=T.id 
+			) 
+	        select count(*) 
+	        from mission_distribution where status=1 
+	        and 
+	        (satrap in(SELECT username FROM T) 
+		     or executor in(SELECT username FROM T)) 
+   </select>
+   
+   <select id="findPageObjects"
+           resultType="com.dc.exp.entity.ExpMission">
+           WITH T AS( 
+		    SELECT * FROM sys_users WHERE username=#{username} 
+		    UNION ALL 
+		    SELECT a.*  FROM sys_users a INNER JOIN T ON a.parentId=T.id 
+		)
+           
+         select top ${pageSize} m.*,d.name department 
+         from mission_distribution m 
+         left join sys_users u on m.executor=u.username 
+         left join sys_depts d on d.id=u.deptId 
+         where status=1 and m.missionId not in (select top ${startIndex} missionId from mission_distribution 
+         where status=1 and 
+         (satrap in(SELECT username FROM T) or executor in(SELECT username FROM T)) 
+         
+         ORDER BY createdTime desc) 
+	        and 
+	     (satrap in(SELECT username FROM T) 
+	     or executor in(SELECT username FROM T)) 
+         order by m.createdTime desc
+         
+   </select>
+   
+   
+   <select id="findPageAcquire"
+           resultType="com.dc.exp.entity.ExpMission">
+          WITH T AS( 
+		    SELECT * FROM sys_users WHERE username=#{username} 
+		    UNION ALL 
+		    SELECT a.*  FROM sys_users a INNER JOIN T ON a.parentId=T.id 
+		)
+           
+           
+         select top ${pageSize} m.*,d.name department 
+         from mission_distribution m 
+         left join sys_users u on m.executor=u.username 
+         left join sys_depts d on d.id=u.deptId 
+         where status in(2,3,4,5,6,7,8) and m.missionId not in (select top ${startIndex} missionId from mission_distribution 
+         where status in(2,3,4,5,6,7,8) and 
+         (satrap in(SELECT username FROM T) or executor in(SELECT username FROM T)) 
+         
+         ORDER BY status asc,createdTime desc) 
+	        and 
+	     (satrap in(SELECT username FROM T) 
+	     or executor in(SELECT username FROM T)) 
+         order by m.status asc,m.createdTime desc
+         
+   </select>
+   <select id="findPageByExecutor"
+           resultType="com.dc.exp.entity.ExpMission">
+           WITH T AS( 
+		    SELECT * FROM sys_users WHERE username=#{username} 
+		    UNION ALL 
+		    SELECT a.*  FROM sys_users a INNER JOIN T ON a.parentId=T.id 
+		)
+           
+         select top ${pageSize} m.*,d.name department 
+         from mission_distribution m 
+         left join sys_users u on m.executor=u.username 
+         left join sys_depts d on d.id=u.deptId 
+         where status in(2,3,4,5,6,7,8) 
+         and m.missionId not in (select top ${startIndex} missionId from mission_distribution where status in(2,3,4,5,6,7,8) 
+         and 
+         (satrap in(SELECT username FROM T) or executor in(SELECT username FROM T))  
+		<if test="meeting!=null and meeting!=''">
+	         and meeting = #{meeting} 
+	     </if>
+         <if test="satrap!=null and satrap!=''">
+	         and satrap = #{satrap} 
+	     </if>
+         <if test="executor!=null and executor!=''">
+	         and executor = #{executor} 
+	     </if>
+         <if test="status!=null and status!=''">
+	         and status = #{status} 
+	     </if>
+			
+			
+			ORDER BY status asc,createdTime desc) 
+			 and 
+	     (satrap in(SELECT username FROM T) 
+	     or executor in(SELECT username FROM T)) 
+			
+         <if test="meeting!=null and meeting!=''">
+	         and meeting = #{meeting} 
+	     </if>
+         <if test="satrap!=null and satrap!=''">
+	         and satrap = #{satrap} 
+	     </if>
+         <if test="executor!=null and executor!=''">
+	         and executor = #{executor} 
+	     </if>
+         <if test="status!=null and status!=''">
+	         and status = #{status} 
+	     </if>
+	     
+         order by m.status asc,m.createdTime desc
+         
+   </select>
+   
+   <select id="getAcquireCount"
+           resultType="int">
+            WITH T AS( 
+		    SELECT * FROM sys_users WHERE username=#{username} 
+		    UNION ALL 
+		    SELECT a.*  FROM sys_users a INNER JOIN T ON a.parentId=T.id 
+			) 
+	        select count(*) 
+	        from mission_distribution where status in(2,3,4,5,6,7,8) 
+	        and
+	        (satrap in(SELECT username FROM T) 
+		     or executor in(SELECT username FROM T)) 
+   </select>
+   <select id="getAcquireByExecutor"
+           resultType="int">
+            WITH T AS( 
+		    SELECT * FROM sys_users WHERE username=#{username} 
+		    UNION ALL 
+		    SELECT a.*  FROM sys_users a INNER JOIN T ON a.parentId=T.id 
+			) 
+           
+	        select count(*) 
+	        from mission_distribution where status in(2,3,4,5,6,7,8) 
+	        and
+	        (satrap in(SELECT username FROM T) 
+		     or executor in(SELECT username FROM T)) 
+	         
+	        <if test="meeting!=null and meeting!=''">
+	         	and meeting = #{meeting} 
+		     </if>
+	         <if test="satrap!=null and satrap!=''">
+		         and satrap = #{satrap} 
+		     </if>
+	         <if test="executor!=null and executor!=''">
+		         and executor = #{executor} 
+		     </if>
+	         <if test="status!=null and status!=''">
+		         and status = #{status} 
+		     </if> 
+   </select>
+   
+   <select id="findProgressById"
+		resultType="com.dc.exp.entity.ExpProgress">
+		select * 
+		from mission_progress 
+		where disId=#{disId} 
+		order by createdTime asc
+	</select>
+   
+   <select id="findStatus"
+		resultType="com.dc.exp.entity.ExpMission">
+		select * 
+		from mission_distribution 
+		where meeting=#{meeting} and executor!='' and executor is not null 
+		<if test="timeFoot!=null and timeFoot!='' and timeHead!=null and timeHead!=''">
+	        and fixedTime between #{timeHead} and DATEADD(DAY,1,#{timeFoot})
+	    </if>
+	</select>
+   
+    <insert id="insertCommon" parameterType="com.dc.sys.vo.AllCommon">
+       insert into all_common 
+       (id,details,type)
+       values
+       (#{id},#{details},#{type})
+    </insert>
+   
+   <select id="findCommon"
+		resultType="com.dc.sys.vo.AllCommon">
+		select * 
+		from all_common 
+		where type=#{type}
+	</select>
+   <select id="findCommonComb"
+		resultType="int">
+		select count(*) 
+		from all_common 
+		where type=#{type} and details=#{details}
+	</select>
+   <select id="findObjectById"
+		resultType="com.dc.exp.entity.ExpMission">
+		select * 
+		from mission_distribution 
+		where missionId=#{missionId}
+	</select>
+</mapper>

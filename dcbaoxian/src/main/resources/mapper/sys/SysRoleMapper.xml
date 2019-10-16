@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dc.sys.dao.SysRoleDao">
+
+     <select id="findObjects"
+             resultType="com.dc.common.vo.CheckBox">
+             select id,name
+             from sys_roles
+     </select>
+
+     <update id="updateObject" parameterType="com.dc.sys.entity.SysRole">
+           update sys_roles
+           <set>
+            <if test="name!=null and name!=''">
+             name=#{name},
+            </if>
+            <if test="note!=null and note!=''">
+             note=#{note},
+            </if>
+            <if test="modifiedUser!=null and modifiedUser!=''">
+             modifiedUser=#{modifiedUser},
+            </if>
+             modifiedTime=getdate()
+           </set>
+           where id=#{id}
+     </update>
+
+   <resultMap type="com.dc.sys.vo.SysRoleMenuVo" 
+              id="sysRoleMenuVo">
+        <!-- one2many(基于角色id查询菜单id)
+         id:角色id
+         menuIds：SysRoleMenuVo 中的setMenuIds方法 -->
+        <collection property="menuIds"
+                    column="id" 
+                    select="com.dc.sys.dao.SysRoleMenuDao.findMenuIdsByRoleId">
+        </collection>      
+   </resultMap>
+   <select id="findObjectById"
+           resultMap="sysRoleMenuVo">
+        select id,name,note
+        from sys_roles
+        where id=#{id}   
+   </select>
+
+   <!-- 
+     1) useGeneratedKeys 表示要使用自增长的主键值
+     2) keyProperty 将自增长主键值赋值给keyProperty
+               指向的参数属性
+    -->
+   <insert id="insertObject"
+           parameterType="com.dc.sys.entity.SysRole"
+           useGeneratedKeys="true"
+           keyProperty="id">
+       insert into sys_roles
+       (name,note,createdUser,createdTime,modifiedUser,modifiedTime)
+       values
+       (#{name},#{note},#{createdUser},getdate(),#{modifiedUser},getdate())
+   </insert>
+
+   <sql id="queryWhereId">
+      <where>
+        <if test="name!=null and name!=''">
+          name like '%' + #{name} + '%'
+        </if>
+      </where>
+   </sql>
+  
+   <select id="getRowCount"
+           resultType="int">
+        select count(*)
+        from sys_roles
+        <include refid="queryWhereId"/>
+   </select>
+   
+   <select id="findPageObjects"
+           resultType="com.dc.sys.entity.SysRole">
+         select top ${pageSize} *
+         from sys_roles where 1=1 and id not in (select top ${startIndex} id from sys_roles ORDER BY createdTime desc)
+          <if test="name!=null and name!=''">
+	        and name like '%' + #{name} + '%'
+	        </if>
+         order by createdTime desc
+         
+   </select>
+</mapper>

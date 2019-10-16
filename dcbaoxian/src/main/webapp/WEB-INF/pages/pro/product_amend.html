@@ -1,0 +1,249 @@
+<!-- Content Wrapper. Contains page content -->
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		修改信息 <small>Preview</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+
+		<li class="active">修改信息</li>
+	</ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<!-- SELECT2 EXAMPLE -->
+	<div class="box box-default">
+		<div class="box-header with-border">
+			<h3 class="box-title"></h3>
+			<div id="box-ids" class="box-title" style="display:none;"></div>
+			<div class="box-tools pull-right">
+				<!-- 最小化 -->
+				<button type="button" class="btn btn-box-tool"
+					data-widget="collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+				<!-- 关闭 -->
+				<button type="button" class="btn btn-box-tool" data-widget="remove">
+					<i class="fa fa-remove"></i>
+				</button>
+			</div>
+		</div>
+		<!-- /.box-header -->
+		<div class="box-body">
+			<div class="row">
+
+
+
+				<!-- /.col -->
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>险种名称</label> <input type="text" class="form-control"
+							name="insurance" id="insurance" placeholder="险种名称">
+					</div>
+					<div class="form-group">
+						<label>承保公司</label> <input type="text" class="form-control"
+							name="underwrite" id="underwrite" placeholder="承保公司">
+					</div>
+					<div class="form-group">
+						<label>合作单位</label> <input type="text" class="form-control"
+							name="cooperator" id="cooperator" placeholder="合作单位">
+					</div>
+					<div class="form-group">
+						<label>备注</label>
+						<textarea rows="10" cols="20" class="form-control"
+							placeholder="主要功能" name="remarks" id="remarks"></textarea>
+					</div>
+					
+					
+				</div>
+				
+
+
+				<div class="col-md-6">
+				
+					
+					
+					<div class="form-group">
+						<label>代理人手续费</label> <input type="text" class="form-control"
+							name="agentCharge" id="agentCharge" placeholder="￥：">
+					</div>
+					
+					
+					<div class="form-group">
+						<label>大诚手续费</label> <input type="text" class="form-control"
+							name="dCCharge" id="dCCharge" placeholder="￥：">
+					</div>
+					
+					<div class="form-group">
+		               <label for="exampleInputFile">保险方案</label>
+		                  <input type="file" id="li1" multiple="multiple" name="submitFile">
+		            </div>
+		            
+		            <div class="form-group">
+						<label>投保要求</label> <textarea rows="4" cols="20" class="form-control"
+							placeholder="投保要求" name="effect" id="li2"></textarea>
+					</div>
+					<div class="form-group">
+						<label>理赔要求</label> <textarea rows="4" cols="20" class="form-control"
+							placeholder="理赔要求" name="effect" id="li3"></textarea>
+					</div>
+		            
+		            
+				</div>
+
+
+
+				<!-- /.col -->
+				<div class="col-md-12">
+					<div class="box-footer">
+						<button type="button" class="btn btn-default btn-cancel">取消</button>
+						<button type="button" class="btn btn-info pull-right btn-save">保存</button>
+					</div>
+				</div>
+		
+
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.box-body -->
+
+	</div>
+	<!-- /.box -->
+
+</section>
+
+
+
+
+<script>
+  $(function () {
+	  $("#gx01").prop("checked",false);
+	  $("#gx02").prop("checked",false);
+	  $("#gx03").prop("checked",false);
+	  
+	  $(".box-footer")
+	  .on("click",".btn-cancel",doCancel)
+	  .on("click",".btn-save",doSave);
+   
+   
+      
+     
+	  
+  })
+
+  
+  
+  
+  
+  
+  
+  function doCancel(){
+	
+	$("#mainContentId").load("product/doProductUI.do");
+ }
+ function doSave(){
+	//1.获取表单数据
+	 var params=doGetEditFormData();
+	
+	 var url="product/doSaveObject.do";
+	
+	 console.log(params);
+	 $.post(url,params,function(result){
+		 
+		 if(result.state==1){
+			 alert(result.message);
+			 doUpload();
+			 doCancel();
+		 }else{
+			alert(result.message);
+		 }
+	 })
+ }
+ 
+ function doGetEditFormData(){
+	
+		
+		var test = $("input[name='updateContent']:checked");
+        var checkBoxValue = ""; 
+        test.each(function(){
+            checkBoxValue += $(this).val()+",";
+        })
+        checkBoxValue = checkBoxValue.substring(0,checkBoxValue.length-1);
+	 var params={
+			 insurance:$("#insurance").val(),
+			 underwrite:$("#underwrite").val(),
+			 cooperator:$("#cooperator").val(),
+			 agentCharge:$("#agentCharge").val(),
+			 dCCharge:$("#dCCharge").val(),
+			 remarks:$("#remarks").val(),
+			 updateContent:checkBoxValue,
+			 insureDemand:$("#li2").val(),
+			 amendsDemand:$("#li3").val()
+			 
+			 }
+	 return params;
+ }
+ 
+ 
+ 
+ function doUpload(){
+		var names="";
+		var fp = $("#li1");
+		var lg = fp[0].files.length; 
+		var items = fp[0].files;
+		var fragment = "";
+		if (lg > 0) {
+			for (var i = 0; i < lg; i++) {
+			var fileName = items[i].name; //获得文件名
+			var fileSize = items[i].size; //获得文件大小 
+				if(fileSize>10485760){
+					names=names+fileName+","
+				}
+			}
+		}
+		names = names.substr(0,names.length-1);
+		if(lg == 0){
+			return false;
+		}else if(!names==""){
+			alert(names+"文件太大,请上传小于10M的文件！");
+			return false;
+		}else{
+			var formData = new FormData();
+			for (var i = 0; i < $("#li1").get(0).files.length; i++) {
+				formData.append("uploadFile", $("#li1").get(0).files[i]);
+			}
+			
+			
+		    $.ajax({
+		            url:'product/upload.do',
+		            type:'post',
+		            data:formData,
+		            //必须false才会自动加上正确的Content-Type
+		            contentType: false,
+		            //必须false才会避开jQuery对 formdata 的默认处理
+		            //XMLHttpRequest会对 formdata 进行正确的处理
+		            processData: false,
+		            cache:false,
+		            async:true,
+		            success:function(result){
+		            	 
+		            		 alert(result.url+"上传成功！");
+		        		 
+		               
+		            },
+		            error:function(result){
+		                alert("后台发生异常");
+		            }
+
+		        }); 
+			
+			
+	}
+ }	
+</script>
+</body>
+</html>

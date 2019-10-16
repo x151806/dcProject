@@ -1,0 +1,578 @@
+<!-- Content Wrapper. Contains page content -->
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		产品添加 <small>Preview</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+
+		<li class="active">产品添加</li>
+	</ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<!-- SELECT2 EXAMPLE -->
+	<div class="box box-default">
+		<div class="box-header with-border">
+			<h3 class="box-title"></h3>
+			<div id="box-ids" class="box-title" style="display:none;"></div>
+			<div class="box-tools pull-right">
+				<!-- 最小化 -->
+				<button type="button" class="btn btn-box-tool"
+					data-widget="collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+				<!-- 关闭 -->
+				<button type="button" class="btn btn-box-tool" data-widget="remove">
+					<i class="fa fa-remove"></i>
+				</button>
+			</div>
+		</div>
+		<!-- /.box-header -->
+		<div class="box-body">
+			<div class="row">
+
+
+
+				<!-- /.col -->
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>险种类型</label> 
+						<input type="text" class="form-control input-sm"
+							name="insuranceType" id="insuranceType" list="inlist" placeholder="险种类型">
+						<datalist id="inlist" >
+							<option value="短期人身意外险">短期人身意外险</option>
+						    <option value="财产险">财产险</option>
+						    <option value="责任险">责任险</option>
+						    <option value="货物险">货物险</option>
+						    <option value="机动车险">机动车险</option>
+						    <option value="人寿险">人寿险</option>
+						</datalist>
+					</div>
+					<div class="form-group">
+						<label>险种名称</label> <input type="text" class="form-control"
+							name="insurance" id="insurance" placeholder="险种名称">
+					</div>
+					<div class="form-group">
+						<label>险种状态</label> 
+						<select id="classify" name="classify" class="form-control">
+							<option value="" selected="selected">----- 请选择 -----</option>
+							<option value="主打产品">主打产品</option>
+							<option value="参考产品">参考产品</option>
+							<option value="其它">其它</option>
+						</select>
+					</div>
+				
+					<div class="form-group">
+						<label>承保公司</label> <input type="text" class="form-control"
+							name="underwrite" id="underwrite" placeholder="承保公司" >
+					</div>
+					<div class="form-group">
+						<label>合作单位</label> <input type="text" class="form-control"
+							name="cooperator" id="cooperator" placeholder="合作单位" >
+					</div>
+					<div class="form-group">
+						<label>有效状态</label> <input type="text" class="form-control"
+							name="status" id="status" placeholder="状态" >
+					</div>
+					
+					
+					<div class="form-group">
+						<label>备注</label>
+						<textarea rows="8" cols="20" class="form-control"
+							placeholder="主要功能" name="remarks" id="remarks"></textarea>
+					</div>
+					
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>更新内容</label>
+						<input type="checkbox" name="updateContent" value="代理人手续费" id="sx01">
+						<label for="sx01">代理人手续费</label>
+						<input type="checkbox" name="updateContent" value="大诚手续费" id="sx02">
+						<label for="sx02">大诚手续费</label>
+						
+						<input type="checkbox" name="updateContent" value="投保要求" id="gx02">
+						<label for="gx02">投保要求</label>
+						<input type="checkbox" name="updateContent" value="理赔要求" id="gx03">
+						<label for="gx03">理赔要求</label>
+						<input type="checkbox" name="updateContent" value="保险方案" id="gx01">
+						<label for="gx01">保险方案</label>
+					</div>
+					
+					<div class="form-group">
+						<label>代理人手续费</label> <input type="text" class="form-control"
+							name="agentCharge" id="agentCharge" placeholder="￥：" disabled>
+					</div>
+					
+					
+					<div class="form-group">
+						<label>大诚手续费</label> <input type="text" class="form-control"
+							name="dCCharge" id="dCCharge" placeholder="￥：" disabled>
+					</div>
+				
+		            
+		            <div class="form-group">
+						<label>投保要求</label> <textarea rows="4" cols="20" class="form-control"
+							placeholder="投保要求" name="effect" id="li2" disabled></textarea>
+					</div>
+					<div class="form-group">
+						<label>理赔要求</label> <textarea rows="4" cols="20" class="form-control"
+							placeholder="理赔要求" name="effect" id="li3" disabled></textarea>
+					</div>
+					
+					
+					<form>
+  					<fieldset id="lifrom" disabled>
+					
+						<div class="box-body table-responsive no-padding" >
+								  	<div class="form-group" id="upSddas">
+						               <label for="exampleInputFile">保险方案</label>
+						                  <input type="file" id="li1" multiple="multiple" name="submitFile" >
+						                  <input type="button" id="upload-bt"  value="提交"/>
+						            
+								  	
+								  	
+								    	<table class="table table-hover" >
+											<thead>
+												<tr>
+													<th>文件名</th>
+													<th>操作</th>
+												</tr>
+											</thead>
+											<tbody id="tbodyId">
+											    <tr>
+											     <td colspan="2">数据正在加载中........................................</td>
+											    </tr>
+											</tbody>
+										</table>
+							  		</div>
+						</div>
+		            </fieldset>
+					</form>
+					
+				</div>
+
+
+				<!-- /.col -->
+				<div class="col-md-12">
+					<div class="box-footer">
+						<button type="button" class="btn btn-default btn-cancel">取消</button>
+						<button type="button" class="btn btn-info pull-right btn-save">保存</button>
+					</div>
+				</div>
+		
+
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.box-body -->
+
+	</div>
+	<!-- /.box -->
+
+</section>
+
+
+
+
+<script>
+  $(function () {
+	  dogetobject();
+	  
+	  
+	  
+	  $("#sx01").prop("checked",false);
+	  $("#sx02").prop("checked",false);
+	  $("#gx01").prop("checked",false);
+	  $("#gx02").prop("checked",false);
+	  $("#gx03").prop("checked",false);
+	  
+	  $(".box-footer")
+	  .on("click",".btn-cancel",doCancel)
+	  .on("click",".btn-save",doSave)
+   
+   
+      
+      //在tbody的checkbox对象上注册change事件
+       $(".box-body")
+      .on("change",'#sx01',doChangeStateX01)
+      .on("change",'#sx02',doChangeStateX02)
+      .on("change",'#gx01',doChangeState01)
+      .on("change",'#gx02',doChangeState02)
+      .on("change",'#gx03',doChangeState03)
+	  .on("click",".delete-file",dodelete)
+	  
+	  
+       $("#upSddas")
+	  	.on("click",'#upload-bt',douploadBt)
+  })
+  
+
+function douploadBt(){
+	  dogetTable();
+	 
+	  var tBody=$("#tbodyId");
+	  var names="";
+		var fp = $("#li1");
+		var lg = fp[0].files.length; 
+		var items = fp[0].files;
+		
+		
+		if (lg > 0) {
+			
+			for (var i = 0; i < lg; i++) {
+				
+				var fileName = items[i].name; //获得文件名
+				var tr=$("<tr></tr>");
+				var tds="<td>"+fileName+"</td>"+
+					    "<td><a class='btn delete-file'>删除</a></td>";
+ 		 		
+ 		 		  //2.3将tds对象追加到tr中
+ 		 		tr.append(tds);
+ 		 		tBody.append(tr);
+			
+			
+			}
+		}
+	  
+  }
+  
+function dodelete(){
+	  
+	  $(this).parents("tr").remove();
+	  
+  }
+  
+function doChangeStateX01() {
+	  var state=$(this).prop("checked");
+	  if(state){
+		  $('#agentCharge').attr("disabled",false);
+	  }else{
+		  var data=$("#box-ids").data("message");
+		  console.log(data);
+		  $("#agentCharge").val(data.agentCharge);
+		  $('#agentCharge').attr("disabled",true);
+	  }
+}
+function doChangeStateX02() {
+	  var state=$(this).prop("checked");
+	  if(state){
+		  $('#dCCharge').attr("disabled",false);
+	  }else{
+		  var data=$("#box-ids").data("message");
+		  $("#dCCharge").val(data.dCCharge);
+		  $('#dCCharge').attr("disabled",true);
+	  }
+}
+
+function doChangeState02() {
+	  var state=$(this).prop("checked");
+	  if(state){
+		  $('#li2').attr("disabled",false);
+	  }else{
+		  var data=$("#box-ids").data("message");
+	  	  $("#li2").val(data.insureDemand);
+		  $('#li2').attr("disabled",true);
+	  }
+}
+function doChangeState03() {
+	  var state=$(this).prop("checked");
+	  if(state){
+		  $('#li3').attr("disabled",false);
+	  }else{
+		  var data=$("#box-ids").data("message");
+	  	  $("#li3").val(data.amendsDemand);
+		  $('#li3').attr("disabled",true);
+	  }
+}
+  
+function doChangeState01() {
+	  var state=$(this).prop("checked");
+	  if(state){
+		  $('#lifrom').attr("disabled",false);
+	  }else{
+		  $('#lifrom').attr("disabled",true);
+
+		  var obj = document.getElementById('li1') ; 
+		  obj.outerHTML=obj.outerHTML; 
+		  dogetTable();
+	  }
+} 
+  
+  
+  
+  
+  function doCancel(){
+	
+	$("#mainContentId").load("product/doProductUI.do");
+ }
+ function doSave(){
+	//1.获取表单数据
+	 var params=doGetEditFormData();
+	
+	 var url="product/doSaveUpObject.do";
+	 console.log(params);
+	 $.post(url,params,function(result){
+		 
+		 if(result.state==1){
+			 alert(result.message);
+			 doUpload();
+			 doCancel();
+		 }else{
+			alert(result.message);
+		 }
+	 })
+ }
+ 
+ function doGetEditFormData(){
+	 Date.prototype.toLocaleString = function() {
+         return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+   };
+   var aa = $("#box-ids").data("putawayTime");
+   var bb = $("#box-ids").data("soldOutTime");
+   var time1="";
+   var time2="";
+   if(aa){
+	   time1 = new Date(aa).toLocaleString();
+   }
+   if(bb){
+	   time2 = new Date(bb).toLocaleString();
+   }
+  
+   
+   
+   
+   var uid=$("#box-ids").data("rowData");
+   var rel=$("#box-ids").data("relation");
+	  
+  	 
+		var test = $("input[name='updateContent']:checked");
+        var checkBoxValue = ""; 
+        test.each(function(){
+            checkBoxValue += $(this).val()+",";
+        })
+        checkBoxValue = checkBoxValue.substring(0,checkBoxValue.length-1);
+        
+        
+        var insPlan="";
+	  	  $("#tbodyId").find("tr").each(function(){
+	  	        var abc = $(this).data("id");
+	  	        if(abc){
+	  	        	insPlan=insPlan+abc+","
+	  	        }
+	  	        
+	  	        
+	  	    });
+  	  insPlan = insPlan.substr(0,insPlan.length-1);
+        
+	 var params={
+			 insuranceType:$("#insuranceType").val(),
+			 insurance:$("#insurance").val(),
+			 classify:$("#classify").val(),
+			 status:$("#status").val(),
+			 underwrite:$("#underwrite").val(),
+			 cooperator:$("#cooperator").val(),
+		  	putawayTime:time1,
+		  	soldOutTime:time2,
+		  	upId:uid,
+		  	relation:rel,
+		  	insurancePlan:insPlan,
+			agentCharge:$("#agentCharge").val(),
+			dCCharge:$("#dCCharge").val(),
+			remarks:$("#remarks").val(),
+			updateContent:checkBoxValue,
+			insureDemand:$("#li2").val(),
+			amendsDemand:$("#li3").val()
+			 
+			 }
+	 return params;
+ }
+ 
+ 
+ 
+ function doUpload(){
+		var names="";
+		var fp = $("#li1");
+		var lg = fp[0].files.length; 
+		var items = fp[0].files;
+		var fragment = "";
+		if (lg > 0) {
+			for (var i = 0; i < lg; i++) {
+			var fileName = items[i].name; //获得文件名
+			var fileSize = items[i].size; //获得文件大小 
+				if(fileSize>10485760){
+					names=names+fileName+","
+				}
+			}
+		}
+		names = names.substr(0,names.length-1);
+		if(lg == 0){
+			return false;
+		}else if(!names==""){
+			alert(names+"文件太大,请上传小于10M的文件！");
+			return false;
+		}else{
+			var formData = new FormData();
+			for (var i = 0; i < $("#li1").get(0).files.length; i++) {
+				formData.append("uploadFile", $("#li1").get(0).files[i]);
+			}
+			
+			
+		    $.ajax({
+		            url:'product/uploadUpdate.do',
+		            type:'post',
+		            data:formData,
+		            //必须false才会自动加上正确的Content-Type
+		            contentType: false,
+		            //必须false才会避开jQuery对 formdata 的默认处理
+		            //XMLHttpRequest会对 formdata 进行正确的处理
+		            processData: false,
+		            cache:false,
+		            async:true,
+		            success:function(result){
+		            	 
+		            		 alert(result.url+"上传成功！");
+		        		 
+		               
+		            },
+		            error:function(result){
+		                alert("后台发生异常");
+		            }
+
+		        }); 
+			
+			
+	}
+ }	
+ 
+ 
+ 
+ 
+ 
+ function dogetobject() {
+		
+		
+	  var id=$("#box-ids").data("rowData");
+	  console.log(id);
+	  var params={"productId":id};
+		 //2.定义请求的url
+		 var url="product/findObjectById.do";
+		 //3.发送异步请求执行查询(浏览器会启动一个工作线程)
+		 //服务端数据返回以后会回调匿名函数，并将结果传递给
+		 //result变量(名字无所谓)
+		 
+		 	$.getJSON(url,params,function(result){//JsonResult
+			 	if(result.state==1){
+			 		console.log(result.data);
+			 		doCreatedata(result.data);
+			 		$("#box-ids").data("message",result.data); 
+			 		dogetTable();
+			  	}else{
+				  	alert(result.message);
+				}
+			});
+}
+	
+ function doCreatedata(row){
+	  Date.prototype.toLocaleString = function() {
+	        return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " ;
+	  	};
+	  	$("#box-ids").data("aaasa",row.insurancePlan);
+	  	$("#box-ids").data("putawayTime",row.putawayTime);
+	  	$("#box-ids").data("soldOutTime",row.soldOutTime);
+	  	$("#box-ids").data("relation",row.relation);
+	  	
+	  	 
+	  	
+	  	
+	  	$("#insuranceType").val(row.insuranceType);
+	  	$("#insurance").val(row.insurance);
+	  	$("#classify").val(row.classify);
+		$("#underwrite").val(row.underwrite);
+		$("#status").val(row.status);
+		$("#cooperator").val(row.cooperator);
+		$("#agentCharge").val(row.agentCharge);
+		$("#dCCharge").val(row.dCCharge);
+		$("#updateContent").val(row.updateContent);
+		$("#li2").val(row.insureDemand);
+		$("#li3").val(row.amendsDemand);
+		$("#remarks").val(row.remarks);
+	  
+ }
+ 
+ 
+ 
+ 
+ 
+ function dogetTable(){
+	 var lan=$("#box-ids").data("aaasa");
+  	var ids={insurancePlan : lan};
+ 	
+   	var url="product/findUploads.do";
+	   //3.ajax request
+	   $.ajaxSettings.async = false;
+	   $.getJSON(url,ids,function(result){
+		  doHandleResponseResult(result);
+	   });
+   }
+ 
+ function doHandleResponseResult(result){
+	   
+		if(result.state==1){
+			  doSetTableBodyRows(result.data);
+		   }else{
+			  doSetTableBodyErrors(result.message);
+		   }
+	}
+	function doSetTableBodyErrors(message){
+		   //获取body对象并清空
+		   var tBody=$("#tbodyId");
+		   tBody.empty();
+		   //创建tr对象
+		   var tr=$("<tr></tr>");
+		   //创建td对象
+		   //var len=$("table thead").find("tr").find("th").length;
+		   var len=$("table th").length;
+		   var td=$("<td></td>");
+		   td.prop("colspan",len);
+		   td.append(message);
+		   tr.append(td);
+		   //将tr追加到tbody
+		   tBody.append(tr);
+	}
+	//将记录呈现在table对象的tbody中
+	function doSetTableBodyRows(records){
+		 //获取tbody对象,并清空
+		   var tBody=$("#tbodyId");
+		   tBody.empty();
+		   //2.迭代数据,并追加到tBody
+		   for(var i=0;i<records.length;i++){
+			  //2.1构建tr对象
+			  var tr=$("<tr></tr>");
+			  tr.data("id",records[i].uploadId);
+			  tr.data("site",records[i].site);
+			  tr.data("fileName",records[i].fileName);
+			  //2.2构建tds对象
+			  var tds=doCreateTds(records[i],i);
+			  //2.3将tds对象追加到tr中
+			  tr.append(tds);
+			  //2.4将tr追加到tbody中
+			  tBody.append(tr);
+		   }
+	}
+	function doCreateTds(row,i){
+		
+		   var tds=
+	       	"<td>"+row.fileName+"</td>"+
+		    "<td><a class='btn delete-file'>删除</a></td>";
+	       return tds;
+	 }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dc.exp.dao.ExpShareDao">
+  
+   <insert id="insertobject" parameterType="com.dc.exp.entity.ExpShare">
+       insert into exp_share 
+       (shareId,sort,topic,author,createdTime)
+       values
+       (#{shareId},#{sort},#{topic},#{author},getdate())
+    </insert>
+   
+   
+   <!-- 基于id执行删除 -->
+   <delete id="deleteObjects">
+      
+      delete from exp_share 
+      where shareId =#{shareId}
+   
+   </delete>
+  
+
+   
+   <update id="updateObjects" 
+       parameterType="com.dc.exp.entity.ExpShare">
+         update exp_share
+         <set>
+             
+             <if test="sort!=null and sort!=''">
+                sort=#{sort},
+             </if>
+             <if test="topic!=null and topic!=''">
+                topic=#{topic},
+             </if>
+             <if test="author!=null and author!=''">
+                author=#{author},
+             </if>
+             
+          </set>
+        where shareId=#{shareId}
+    </update>
+   
+   
+  
+   
+   
+  
+   
+   <select id="findAuthor"
+           resultType="com.dc.exp.entity.ExpShare">
+       
+	        select distinct author 
+	        from exp_share 
+   </select>
+   
+   <select id="findObjectsById"
+           resultType="com.dc.exp.entity.ExpShare">
+       
+	        select * 
+	        from exp_share 
+	        where shareId=#{shareId}
+   </select>
+   
+   
+   <select id="getRowCount"
+           resultType="int">
+       
+	        select count(*) 
+	        from exp_share 
+	        where 1=1 
+	        <if test="sort!=null and sort!=''">
+	         and sort=#{sort} 
+	        </if>
+	        <if test="topic!=null and topic!=''">
+	         and topic=#{topic} 
+	        </if>
+	        <if test="author!=null and author!=''">
+	         and author=#{author} 
+	        </if>
+   </select>
+   
+   <select id="findPageObjects"
+           resultType="com.dc.exp.entity.ExpShare">
+           
+         select top ${pageSize} * 
+         from exp_share 
+         where shareId not in (select top ${startIndex} shareId from exploit_develop 
+         where 1=1 
+	        <if test="sort!=null and sort!=''">
+	         and sort=#{sort} 
+	        </if>
+	        <if test="topic!=null and topic!=''">
+	         and topic=#{topic} 
+	        </if>
+	        <if test="author!=null and author!=''">
+	         and author=#{author} 
+	        </if>
+         order by createdTime desc) 
+	        <if test="sort!=null and sort!=''">
+	         and sort=#{sort} 
+	        </if>
+	        <if test="topic!=null and topic!=''">
+	         and topic=#{topic} 
+	        </if>
+	        <if test="author!=null and author!=''">
+	         and author=#{author} 
+	        </if>
+         order by createdTime desc
+         
+   </select>
+   
+   
+   
+</mapper>

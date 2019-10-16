@@ -1,0 +1,91 @@
+package com.dc.sys.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+public class SysReport implements Serializable{
+	
+	
+	
+	private static final long serialVersionUID = 2248968858448866717L;
+	private String reportId;
+
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date workTime;
+	
+	private Integer userId;
+	private String workToday;
+	private String workNextDay;
+	private String opinion;
+	private String comment;
+	private Date createdTime;
+	private String createdUser;
+	public String getReportId() {
+		return reportId;
+	}
+	public void setReportId(String reportId) {
+		this.reportId = reportId;
+	}
+	public Date getWorkTime() {
+		return workTime;
+	}
+	public void setWorkTime(Date workTime) {
+		this.workTime = workTime;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	public String getWorkToday() {
+		return workToday;
+	}
+	public void setWorkToday(String workToday) {
+		this.workToday = workToday;
+	}
+	public String getWorkNextDay() {
+		return workNextDay;
+	}
+	public void setWorkNextDay(String workNextDay) {
+		this.workNextDay = workNextDay;
+	}
+	public String getOpinion() {
+		return opinion;
+	}
+	public void setOpinion(String opinion) {
+		this.opinion = opinion;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+	public String getCreatedUser() {
+		return createdUser;
+	}
+	public void setCreatedUser(String createdUser) {
+		this.createdUser = createdUser;
+	}
+	@Override
+	public String toString() {
+		return "SysReport [reportId=" + reportId + ", workTime=" + workTime + ", userId=" + userId + ", workToday="
+				+ workToday + ", workNextDay=" + workNextDay + ", opinion=" + opinion + ", comment=" + comment
+				+ ", createdTime=" + createdTime + ", createdUser=" + createdUser + "]";
+	}
+
+	
+	
+	
+	
+
+}

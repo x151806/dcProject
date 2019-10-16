@@ -1,0 +1,189 @@
+
+
+  <!-- Content Wrapper. Contains page content -->
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+                修改分享
+        <small>Preview</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+       
+        <li class="active">修改分享</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- SELECT2 EXAMPLE -->
+      <div class="box box-default">
+        <div class="box-header with-border">
+			<h3 id="biaoshi" class="box-title">修改信息</h3>
+			<div id="asdId" class="box-title" style="display:none;">修改信息</div>
+          <div class="box-tools pull-right">
+          <!-- 最小化 -->
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <!-- 关闭 -->
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        
+        <form class="form-horizontal" >
+        <div class="box-body">
+         
+          
+                
+                
+               
+            
+            <!-- /.col -->
+            <div class="col-md-6">
+            
+            <div class="form-group">
+						<label for="sort"  class="col-sm-4 control-label">文档类型：</label>
+						<div class="col-sm-8">
+								<input id="sort" name="sort" class="form-control" list="cars" />
+								<datalist id="cars">
+								</datalist>
+							
+						</div>
+			</div>
+			</div>
+			<div class="col-md-6">
+             <div class="form-group">
+						<label for="topic" class="col-sm-4 control-label">技术名称：</label>
+
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="topic" id="topic"/>
+						</div>
+			</div>
+             
+             
+            
+              
+              
+            </div>
+            
+              
+            
+              <div class="col-md-12">
+              
+              <div class="box-footer">
+          <button type="button" class="btn btn-default btn-cancel">取消</button>
+          <button type="button" class="btn btn-info pull-right btn-save">保存</button>
+        </div>
+              </div>
+              
+            <!-- /.col -->
+          
+          <!-- /.row -->
+        </div>
+        <!-- /.box-body -->
+       </form>
+      </div>
+      <!-- /.box -->
+
+      </section>
+
+<script>
+$(function(){
+	
+	doInitFormData();
+	 
+	showCommonList();
+	$(".box-footer")
+	.on("click",".btn-save",doSave)
+	.on("click",".btn-cancel",doCancel);
+	
+	
+});
+
+
+
+function doCancel(){
+	var url="share/doShareUI.do";
+	$("#mainContentId")
+	.load(url,function(){
+		 $("#asdId").removeData();
+	});
+}
+
+function doSave(){
+	
+	//1.参数(表单数据)
+	var params=doGetEditFormData();
+	
+	var url="share/updateShare.do"; 
+	console.log(params);
+	
+	//3.ajax request
+	$.post(url,params,function(result){
+		  if(result.state==1){
+			  alert(result.message);
+			  doCancel();
+		  }else{
+			  alert(result.message);
+		  }
+	  });
+}
+function doGetEditFormData(){
+	var data=$("#asdId").data("rowData");
+	var params = {
+			shareId : data.shareId,
+			sort : $("#sort").val(),
+			topic : $("#topic").val()
+		}
+	return params;
+}
+
+
+function showCommonList() {
+	$("#cars").append('<option value="">----- 请选择 -----</option>');
+	
+	var params = {type : 3}
+    	var url="mis/findCommonObject.do";
+ 	   //3.ajax request
+ 	   
+ 	   $.getJSON(url,params,function(result){
+ 		  if(result.state==1){
+ 			var list = result.data;
+ 			for (var i = 0; i < list.length; i++) {
+ 				
+				var op = '<option value="' + list[i].details + '">' + list[i].details + '</option>';
+				$("#cars").append(op);
+			}
+ 		   }else{
+ 			  var op = '<option value=""></option>';
+				$("#cars").append(op);
+ 		   }
+ 	   });
+	
+}
+
+
+function doInitFormData(){
+	var data=$("#asdId").data("rowData");
+    
+    console.log(data);
+    if(!data)return;
+	 
+	 
+	
+	 
+	 //初始化用户信息 
+	 $("#sort").val(data.sort);
+	 $("#topic").val(data.topic);
+	
+	
+	 
+	 
+	 
+}
+
+</script>
+</body>
+</html>

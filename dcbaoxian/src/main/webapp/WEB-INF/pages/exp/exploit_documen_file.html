@@ -1,0 +1,480 @@
+ <!-- Content Header (Page header) -->
+ <section  class="content container-fluid">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+			
+				<h3 class="box-title">文档名称</h3> 
+				<span id="box-ids" style="display:none"></span>
+				<span id="box-type" style="display:none"></span>
+				<div class="box-tools">
+				
+					
+				</div>
+			</div>
+			<!-- /.box-header -->
+			
+			
+			<div class="col-md-12">
+			<!-- /.form-group -->
+               <div class="form-group">
+               <label for="exampleInputFile">上传文件</label>
+                  <input type="file" id="formId" multiple="multiple" name="submitFile">
+					<input type="button" id="upload-bt" value="提交"/>
+              </div>
+              
+              <!-- /.form-group -->
+			<div class="box-body table-responsive no-padding" id="table-up">
+				上传记录：
+				<table class="table table-hover" id="ai-table">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>文件名</th>
+							<th>上传时间</th>
+							<th>上传人</th>
+							<th>审核状态</th>
+							<th>审核人</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="tbodyId">
+					    <tr>
+					     <td colspan="5">数据正在加载中........................................</td>
+					    </tr>
+					</tbody>
+					
+				</table>
+			</div>
+			</div>
+			
+			
+			<div class="col-md-12" id="btn-one">
+		          <button class="btn btn-info pull-left btn-primary" id="btn-show" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+					 下载列表
+					</button>	
+    		 </div>
+    		 
+    		 <div class="col-md-12">
+			<div class="collapse" id="collapseExample">
+		  <div class="well">
+			  
+			    	<table class="table table-hover" >
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>文件名</th>
+								<th>下载时间</th>
+								<th>下载人</th>
+							</tr>
+						</thead>
+						<tbody id="tbodyId2">
+						    <tr>
+						     <td colspan="4">数据正在加载中........................................</td>
+						    </tr>
+						</tbody>
+					</table>
+		  </div>
+		</div>
+		</div>
+			
+			
+			
+			
+			<div class="col-md-12">
+              <div class="box-footer">
+		          <button type="button" class="btn btn-info pull-right btn-cancel">返回</button>
+		        </div>
+    		 </div>
+			
+			
+			
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+    		 
+			<div id="pageId" class="box-footer clearfix">
+			
+			</div>
+			
+			
+			
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+	
+	
+</div>
+ </section>
+
+
+<script type="text/javascript">
+$(function(){
+	doGetObjects();
+	//按钮事件注册
+    $(".form-group")
+  	.on("click","#upload-bt",doUpload);
+	
+    $("#tbodyId")
+	.on("click",".down-file",doDownfile)
+	.on("click",".delete-file",doDeletefile)
+	.on("click",".btn-audit",doValidById)
+	
+    $(".box-footer")
+	.on("click",".btn-cancel",doCancel)
+	
+    $("#btn-one")
+	.on("click","#btn-show",dofindDown)
+	
+	
+})
+
+ //禁用和启用操作
+   function doValidById(){
+	   //params
+	   var id=$(this).parents("tr").data("id");
+	   var audit=$(this).parents("tr").data("audit");
+	   var newAudit=audit?0:1;
+	   var params={"uploadId":id,"audit":newAudit};
+	   //url
+	   var url="exploit/updateDocument.do";
+	   //ajax request
+       var btn=$(this);//获取点击的button对象
+	   $.post(url,params,function(result){
+    	   if(result.state==1){
+    		   alert(result.message);
+    		   doGetObjects();//重新查询刷新
+    	   }else{
+    		   alert(result.message);
+    	   }
+       })    
+   }    
+
+function doDeletefile(){
+	//1.给出删除提示
+	 if(!confirm("您确认删除吗？"))return;
+	var a=$(this).parents("tr").data("site");
+	var b=$(this).parents("tr").data("id");
+	var params={
+			"uploadId":b,"site":a
+	};
+  	
+  	var url="exploit/deleteByUploadId.do"; 
+  	console.log(params);
+  	
+  	//3.ajax request
+  	$.post(url,params,function(result){
+		  if(result.state==1){
+			  alert(result.message);
+			  doGetObjects();
+		  }else{
+			  alert(result.message);
+		  }
+	  });
+	
+	
+}
+
+function doDownfile() {
+	var a=$(this).parents("tr").data("site");
+	var b=$(this).parents("tr").data("fileName");
+	var c=$(this).parents("tr").data("id");
+	 a=encodeURI(encodeURI(a));
+	 b=encodeURI(encodeURI(b));
+	 c=encodeURI(encodeURI(c));
+	
+	
+	 window.location="exploit/download.do?site="+a+"&filename="+b+"&uploadId="+c;
+	
+	
+}
+
+
+ function doCancel(){
+    	var url="exploit/doDocumenUI.do";
+    	$("#mainContentId")
+    	.load(url,function(){
+    	  $("#mainContentId").removeData();
+    	});
+}
+
+
+
+
+ 
+ 
+ 
+ 
+ function dofindDown(){
+	 var m=[];
+	 $("#ai-table tr").each(function(){
+	      	var a=$(this).data("id");
+		    	//push为数组中用于存数据的函数
+			    m.push(a);
+	    });
+	 var idArray = m.slice(1);
+	 
+	 console.log(idArray.toString());
+	 var params={uploadId : idArray.toString()};
+		var url="exploit/findDownFileObject.do";
+		   //3.ajax request
+		   
+		   $.getJSON(url,params,function(result){
+			  doHandleResponseResult2(result);
+		   });	
+		
+}
+ 
+ function doHandleResponseResult2(result){
+	   
+		if(result.state==1){
+			  doSetTableBodyRows2(result.data);
+		   }else{
+			  doSetTableBodyErrors2(result.message);
+		   }
+	}
+	function doSetTableBodyErrors2(message){
+		   //获取body对象并清空
+		   var tBody=$("#tbodyId2");
+		   tBody.empty();
+		   //创建tr对象
+		   var tr=$("<tr></tr>");
+		   //创建td对象
+		   //var len=$("table thead").find("tr").find("th").length;
+		   var len=$("table th").length;
+		   var td=$("<td></td>");
+		   td.prop("colspan",len);
+		   td.append(message);
+		   tr.append(td);
+		   //将tr追加到tbody
+		   tBody.append(tr);
+	}
+	//将记录呈现在table对象的tbody中
+	function doSetTableBodyRows2(records){
+		 //获取tbody对象,并清空
+		   var tBody=$("#tbodyId2");
+		   tBody.empty();
+		   //2.迭代数据,并追加到tBody
+		   for(var i=0;i<records.length;i++){
+			  //2.1构建tr对象
+			  var tr=$("<tr></tr>");
+			  tr.data("id",records[i].downId);
+			  //2.2构建tds对象
+			  var tds=doCreateTds2(records[i],i);
+			  //2.3将tds对象追加到tr中
+			  tr.append(tds);
+			  //2.4将tr追加到tbody中
+			  tBody.append(tr);
+		   }
+	}
+	function doCreateTds2(row,i){
+		Date.prototype.toLocaleString = function() {
+	          return this.getFullYear() + "/" + (this.getMonth() + 1) + "/" + this.getDate() + "/ " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+	    };
+		var unixTimestamp = new Date(row.downTime);
+		downTime = unixTimestamp.toLocaleString();
+		
+		var downName="";
+		if(row.downName){
+			downName=row.downName;
+		}
+		
+		
+		   var tds=
+	       	"<td>"+(parseInt(i)+1)+"</td>"+
+	       	"<td>"+row.fileName+"</td>"+
+	       	"<td>"+downTime+"</td>"+
+	       	"<td>"+downName+"</td>";
+	       return tds;
+	 }
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+function doGetObjects(){
+	
+	var id=$("#box-ids").text();
+	var type=$("#box-type").text();
+	var params={disId : id,type : type};
+	var url="exploit/findDocumentObjects.do";
+	   //3.ajax request
+	   
+	   $.getJSON(url,params,function(result){
+		  doHandleResponseResult(result);
+	   });
+}
+
+function doHandleResponseResult(result){
+	   
+	if(result.state==1){
+		  doSetTableBodyRows(result.data);
+		  doSetPagination(result.data);
+	   }else{
+		  doSetTableBodyErrors(result.message);
+	   }
+}
+function doSetTableBodyErrors(message){
+	   //获取body对象并清空
+	   var tBody=$("#tbodyId");
+	   tBody.empty();
+	   //创建tr对象
+	   var tr=$("<tr></tr>");
+	   //创建td对象
+	   //var len=$("table thead").find("tr").find("th").length;
+	   var len=$("table th").length;
+	   var td=$("<td></td>");
+	   td.prop("colspan",len);
+	   td.append(message);
+	   tr.append(td);
+	   //将tr追加到tbody
+	   tBody.append(tr);
+}
+//将记录呈现在table对象的tbody中
+function doSetTableBodyRows(records){
+	 //获取tbody对象,并清空
+	   var tBody=$("#tbodyId");
+	   tBody.empty();
+	   //2.迭代数据,并追加到tBody
+	   for(var i=0;i<records.length;i++){
+		  //2.1构建tr对象
+		  var tr=$("<tr></tr>");
+		  tr.data("id",records[i].uploadId);
+		  tr.data("site",records[i].site);
+		  tr.data("fileName",records[i].fileName);
+		  tr.data("audit",records[i].audit);
+		  //2.2构建tds对象
+		  var tds=doCreateTds(records[i],i);
+		  //2.3将tds对象追加到tr中
+		  tr.append(tds);
+		  //2.4将tr追加到tbody中
+		  tBody.append(tr);
+	   }
+}
+function doCreateTds(row,i){
+	Date.prototype.toLocaleString = function() {
+          return this.getFullYear() + "/" + (this.getMonth() + 1) + "/" + this.getDate() + "/ " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+    };
+	var unixTimestamp = new Date(row.createdTime);
+	commonTime = unixTimestamp.toLocaleString();
+	commentTime = commonTime;
+	
+	var auditName="";
+	if(row.auditName){
+		auditName=row.auditName;
+	}
+	
+	
+	   var tds=
+       	"<td>"+(parseInt(i)+1)+"</td>"+
+       	"<td>"+row.fileName+"</td>"+
+       	"<td>"+commentTime+"</td>"+
+       	"<td>"+row.createdUser+"</td>"+
+       	"<td><button type='button' class='btn btn-default btn-audit'>"+(row.audit?"已审核":"未审核")+"</button></td>"+
+       	"<td>"+auditName+"</td>"+
+	    "<td ><a class='btn down-file'>下载</a>-<a class='btn delete-file'>删除</a></td>";
+       return tds;
+ }
+
+
+
+
+
+
+function doUpload(){
+		var names="";
+		var fp = $("#formId");
+		var lg = fp[0].files.length; 
+		
+		var items = fp[0].files;
+		var fragment = "";
+		if (lg > 0) {
+			for (var i = 0; i < lg; i++) {
+			var fileName = items[i].name; //获得文件名
+			var fileSize = items[i].size; //获得文件大小 
+				if(fileSize>10485760){
+					names=names+fileName+","
+				}
+			}
+		}
+		names = names.substr(0,names.length-1);
+		if(lg == 0){
+			alert("请选择文件");
+			return false;
+		}else if(!names==""){
+			alert(names+"文件太大,请上传小于10M的文件！");
+			return false;
+		}else{
+			var formData = new FormData();
+			for (var i = 0; i < $("#formId").get(0).files.length; i++) {
+				formData.append("uploadFile", $("#formId").get(0).files[i]);
+			}
+			formData.append("disId", $("#box-ids").text());
+			formData.append("type", $("#box-type").text());
+			
+		    $.ajax({
+		            url:'exploit/upload.do',
+		            type:'post',
+		            data:formData,
+		            //必须false才会自动加上正确的Content-Type
+		            contentType: false,
+		            //必须false才会避开jQuery对 formdata 的默认处理
+		            //XMLHttpRequest会对 formdata 进行正确的处理
+		            processData: false,
+		            cache:false,
+		            async:true,
+		            success:function(result){
+		            	 
+		            		 alert(result.url+"上传成功！");
+		            		 doGetObjects();
+		               
+		            },
+		            error:function(result){
+		                alert("后台发生异常");
+		            }
+
+		        }); 
+			
+			
+		}
+		
+		
+		
+
+
+
+}
+
+</script>
+
+
+
+

@@ -1,0 +1,521 @@
+
+ <!-- Content Header (Page header) -->
+    <section class="content-header">
+    
+      <h1>产品列表
+        <small>Preview</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+      <li><a href="#">Forms</a></li>
+        <li class="active">产品列表</li>
+      </ol>
+      
+    </section>
+ <section  class="content container-fluid">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+			
+				<h3 class="box-title">查询列表</h3> 
+				
+				
+				<div class="box-tools">
+					<div  class="input-group " style="background:#3691BD;">
+						
+
+						
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-primary pull-right btn-update">更新</button>
+							<button type="button" class="btn btn-primary pull-right btn-out">下架</button>
+							<button type="button" class="btn btn-primary pull-right btn-add">上架</button>
+							<button type="button" class="btn btn-primary pull-right" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+							  查询
+							</button>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div style="height:20px"></div>
+				
+				<div class="collapse" id="collapseExample">
+  					<div class="well" style="background:#DFF0F4;">
+   
+  
+						<div class="row">
+		
+		
+		
+							<!-- /.col -->
+							<div class="col-md-3" style="background:#DFF0F4;">
+								
+								
+								<div class="form-group">
+								<label class="col-sm-4 control-label" style="padding: 5px;">&nbsp;&nbsp;险种类型：</label>
+		
+								<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									name="insuranceType" id="insuranceType" list="inlist" placeholder="险种类型">
+								<datalist id="inlist" >
+									<option value="短期人身意外险">短期人身意外险</option>
+								    <option value="财产险">财产险</option>
+								    <option value="责任险">责任险</option>
+								    <option value="货物险">货物险</option>
+								    <option value="机动车险">机动车险</option>
+								    <option value="人寿险">人寿险</option>
+								</datalist>
+								</div>
+								</div>
+								
+							</div>
+							<div class="col-md-3" style="background:#DFF0F4;">
+								
+								
+								<div class="form-group">
+								<label class="col-sm-4 control-label" style="padding: 5px;">&nbsp;&nbsp;险种名称：</label>
+		
+								<div class="col-sm-8">
+								<input type="text" class="form-control input-sm"
+									name="insurance" id="insurance" placeholder="险种名称">
+								</div>
+								</div>
+								
+							</div>
+							<div class="col-md-3" style="background:#DFF0F4;">
+								
+								
+								<div class="form-group">
+								<label class="col-sm-4 control-label" style="padding: 5px;">&nbsp;&nbsp;险种状态：</label>
+		
+								<div class="col-sm-8">
+									
+									<select id="classify" name="classify" class="form-control input-sm">
+										<option value="" selected="selected">----- 请选择 -----</option>
+										<option value="主打产品">主打产品</option>
+										<option value="参考产品">参考产品</option>
+										<option value="其它">其它</option>
+									</select>
+								</div>
+								</div>
+								
+							</div>
+							<div class="col-md-3" style="background:#DFF0F4;">
+								<div class="form-group">
+									<label class="col-sm-4 control-label" style="padding: 5px;">&nbsp;&nbsp;有效状态：</label>
+									<div class="col-sm-8">
+										<select id="status" name="status" class="form-control input-sm">
+										<option value="" selected="selected">----- 请选择 -----</option>
+										<option value="上架">上架</option>
+										<option value="下架">下架</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3" style="background:#DFF0F4;">
+								<div class="form-group">
+									<label class="col-sm-4 control-label" style="padding: 5px;">&nbsp;&nbsp;合作单位：</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control input-sm"
+										name="cooperator" id="cooperator" placeholder="合作单位">
+						            </div>
+					            </div>
+							</div>
+							<div class="col-md-3" style="background:#DFF0F4;">
+								<div class="form-group">
+									<label class="col-sm-4 control-label" style="padding: 5px;">&nbsp;&nbsp;更新时间：</label>
+									<div class="col-sm-8">
+										<input type="date" class="form-control input-sm" name="updateTime" id="updateTime">
+									</div>
+								
+								</div>
+								
+							</div>
+							<div style="height: 50px;"></div>
+							<div class="box-footer" style="background:#DFF0F4;">
+									<button type="button" class="btn btn-default btn-search pull-right btn-sm btn-findss">
+		                               	 查询<i class="fa fa-search"></i>
+									</button>
+								
+					        </div>  
+						
+					</div>
+					
+					
+				</div>
+			</div>
+					
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+				<table class="table table-hover table-striped table-bordered table-condensed">
+					<thead>
+						<tr class="info">
+							<th><input type="checkbox" id="checkAll" checked="checked">全选</th>
+							<th>序号</th>
+							<th>险种类型</th>
+							<th>险种名称</th>
+							<th>险种状态</th>
+							<th>承保公司</th>
+							<th>合作单位</th>
+							<th>上架时间</th>
+							<th>下架时间</th>
+							<th>更新时间</th>
+							<th>有效状态</th>
+							<th>代理人手续费</th>
+							<th>大诚手续费</th>
+							<th>更新内容</th>
+							<th style="text-align:center;">操作</th>
+						</tr>
+					</thead>
+					<tbody id="tbodyId">
+					    <tr>
+					     <td colspan="13">数据正在加载中........................................</td>
+					    </tr>
+					</tbody>
+					
+				</table>
+			</div>
+			<div id="pageId" class="box-footer clearfix">
+			
+			</div>
+			<!-- /.box-body -->
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+</div>
+ </section>
+ 
+<style>
+    table.table tr td {
+        border: 1px solid #C9E4D9/* 整体表格边框 */
+    }
+</style>
+<script type="text/javascript">
+$(function(){
+	$("#pageId").load("doPageUI.do",function(){
+        //发异步请求获取数据
+        doGetObjects();
+ 	});
+	
+	  $(".box-footer")
+	  	.on("click",".btn-findss",doGetObjects)
+	
+	//按钮事件注册
+    $(".input-group-btn")
+  	.on("click",".btn-add",doLoadEditUI)
+  	.on("click",".btn-out",doLoadOut)
+  	.on("click",".btn-update",doProductUpdate)
+   
+  
+    $("#tbodyId")
+  	.on("click",".btn-particulars",doParticulars)
+  	.on("click",".btn-amend",doAmend)
+  	
+  	 $("#checkAll").change(doChangeTBodyCheckBoxState);
+    
+    //在tbody的checkbox对象上注册change事件
+     $("#tbodyId")
+    .on("change",'.cBox',doChangeTheadCheckBoxState);
+  	
+	
+})
+//修改thead中checkbox对象状态
+function doChangeTheadCheckBoxState(){
+	//1.获取所有tbody中checkbox对象状态相与的结果
+	var state=true;//默认值很重要
+	$("#tbodyId input[type=checkbox]")
+	.each(function(){
+	     state=state&&$(this).prop("checked");
+	})
+	//2.修改thead中checkbox状态
+	$("#checkAll").prop("checked",state);
+}
+//修改tbody中checkbox对象状态 
+function doChangeTBodyCheckBoxState(){
+	 //1.获取当前checkbox对象的状态
+	 var state=$(this).prop("checked");
+	 //2.更新tbody中checkbox的状态
+	 //方案1
+	/*  $("#tbodyId input[type='checkbox']")
+	 .each(function(){
+		 $(this).prop("checked",state);
+	 }) */
+	 //方案2
+	 $("#tbodyId input[type='checkbox']")
+	 .prop("checked",state);
+}
+
+function doLoadOut(){
+	 var id=doGetCheckedIds();
+	   if(id.length==0){
+		 alert("请先选择！");
+		 return;
+	 	}
+	   if(id.length>1){
+		 alert("只能选择一条数据！");
+		 return;
+	 	}
+	   
+	   var params={productId:id.toString()}
+		 //2.2.2请求url
+		 var url="product/updateOut.do"
+		 //2.2.3发送异步请求
+		 $.post(url,params,function(result){//JsonResult
+			 if(result.state==1){
+				 alert(result.message);
+				 doGetObjects();//重新查询
+			 }else{
+				 alert(result.message)
+			 }
+		 })
+	   
+	   
+	   
+}
+function doGetCheckedIds(){
+	 //1.定义一个数组用于存储选中的记录id
+	 var idArray=[];//new Array();
+	 //2.获取tbody中所有的checkbox对象
+	 $("#tbodyId input[type='checkbox']")
+	 //3.迭代所有的checkbox(借助each函数)
+	 .each(function(){//每发现一个checkbox都会执行
+	 //4.将选中的checkbox对象的值存储到数组
+		 //$(this)指向当前的type为checkbox对象
+	     if($(this).prop("checked")){
+	    	//$(this).val() 获取当前checkbox对象value属性值
+	    	//push为数组中用于存数据的函数
+		    idArray.push($(this).val());
+		 }
+	 })
+	 //5.返回结果
+	 return idArray;
+}
+
+function doProductUpdate(){
+	var id=doGetCheckedIds();
+	   if(id.length==0){
+		 alert("请先选择！");
+		 return;
+	 	}
+	   if(id.length>1){
+		 alert("只能选择一条数据！");
+		 return;
+	 	}
+	   
+		var title;
+	  	title="更新";
+	  	var url="product/doProductUpdate.do"
+			$("#mainContentId").load(url,function(){
+			$(".box-title").html(title);
+			$("#box-ids").data("rowData",id.toString());
+			
+		}) 
+}
+function doAmend(){
+	var abc=$(this).parents("tr").data("id");
+	var title;
+	title="修改信息";
+	
+	var url="product/doProductAmend.do"
+		$("#mainContentId").load(url,function(){
+		$(".box-title").html(title);
+		$("#box-ids").data("rowData",abc); 
+	}) 
+
+}
+
+function doLoadEditUI(){
+		var title;
+	  	title="添加";
+	  	doLoadPage(title);
+}
+function doLoadPage(title){
+	var url="product/doProductEditUI.do"
+		$("#mainContentId").load(url,function(){
+		$(".box-title").html(title);
+	}) 
+}
+
+function doParticulars(){
+	var abc=$(this).parents("tr").data("id");
+	var title;
+	title="产品详情";
+	doLoadPage2(title,abc);
+}
+function doLoadPage2(title,abc){
+	var url="product/doProductParticulars.do"
+		$("#mainContentId").load(url,function(){
+		$(".box-title").html(title);
+		$("#box-ids").data("rowData",abc); 
+	}) 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function doGetObjects(){
+	 //初始化thead中checkbox状态
+	 $("#checkAll").prop("checked",false);
+	// debugger
+	 //1.定义请求的参数
+	 //1.1获取绑定的pageCurrent值
+	 var pageCurrent=
+	 $("#pageId").data("pageCurrent");
+	 //1.2没有值则认为是首页
+	 //js中变量值为undefined表示为false，0也是false
+	 if(!pageCurrent)pageCurrent=1;						
+	 var params={"pageCurrent":pageCurrent,"insurance":$("#insurance").val(),
+			 "status":$("#status").val(),"insuranceType":$("#insuranceType").val(),
+			 "classify":$("#classify").val(),"cooperator":$("#cooperator").val(),"updateTime":$("#updateTime").val()};
+			 
+			 
+	 
+	 //2.定义请求的url
+	 var url="product/findObjects.do";
+	 //3.发送异步请求执行查询(浏览器会启动一个工作线程)
+	 //服务端数据返回以后会回调匿名函数，并将结果传递给
+	 //result变量(名字无所谓)
+	 $.get(url,params,function(result){//JsonResult
+		 //手动转换串为对象
+		 result=JSON.parse(result);
+		 //debugger
+		 console.log(result);//.....
+		 doHandleResponseResult(result);
+	 },"text");
+}
+//处理查询结果
+function doHandleResponseResult(result){
+	if(result.state==1){
+	    //console.log(result);
+	    //1.设置table中tbody部分的内容
+	    //1.1 result-->JsonResult
+	    //1.2 result.data-->PageObject
+	    //1.3 result.data.records-->List<SysLog>
+	    doSetTableBodyRows(result.data.records);
+	    //2.设置分页信息
+	    doSetPagination(result.data);
+  }else{
+	   doSetTableBodyErrors(result.message);
+	} 
+}
+
+function doSetTableBodyErrors(message){
+	   //获取body对象并清空
+	   var tBody=$("#tbodyId");
+	   tBody.empty();
+	   //创建tr对象
+	   var tr=$("<tr></tr>");
+	   //创建td对象
+	   //var len=$("table thead").find("tr").find("td").length;
+	   var len=$("table th ").length;
+	   
+	   var td=$("<td></td>");
+	   td.prop("colspan",len);
+	   td.append(message);
+	   tr.append(td);
+	   //将tr追加到tbody
+	   tBody.append(tr);
+}
+//将记录呈现在table对象的tbody中
+function doSetTableBodyRows(records){
+	 //1.获取tbody对象，并清空内容
+	 var tBody=$("#tbodyId");
+	 tBody.empty();//清空
+	 //2.迭代records记录，并将记录追加到tbody中
+	 for(var i=0;i<records.length;i++){
+		//2.1创建tr对象
+		var tr=$("<tr></tr>");
+		tr.data("id",records[i].productId);
+		//2.2创建td对象
+		var tds=doCreateTds(records[i],i);//一条记录
+		//2.3将td对象内容追加到tr中
+		tr.append(tds);
+		//2.4将tr追加tbody中
+		tBody.append(tr);
+	 }
+}
+//创建当前行的所有td元素
+function doCreateTds(row,i){
+	Date.prototype.toLocaleString = function() {
+        return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " ;
+  	};
+	
+	var putawayTime = "";
+	if(row.putawayTime){
+		
+		putawayTime = new Date(row.putawayTime).toLocaleString();
+	}
+	
+	var soldOutTime = "";
+	if(row.soldOutTime){
+		
+		soldOutTime = new Date(row.soldOutTime).toLocaleString();
+	}
+	
+	var updateTime = "";
+	if(row.updateTime){
+		
+		updateTime = new Date(row.updateTime).toLocaleString();
+	}
+	
+	var agentCharge = "";
+	if(row.agentCharge){
+		
+		agentCharge = row.agentCharge;
+	}
+	
+	var dCCharge = "";
+	if(row.dCCharge){
+		
+		dCCharge = row.dCCharge;
+	}
+	var insuranceType = "";
+	if(row.insuranceType){
+		
+		insuranceType = row.insuranceType;
+	}
+	var classify = "";
+	if(row.classify){
+		
+		classify = row.classify;
+	}
+	
+	
+ 		
+	     var tds="<td><input type='checkbox' class='cBox' name='cItem' value='"+row.productId+"'></td>"+
+		   	 "<td>"+(i+1)+"</td>"+
+		     "<td>"+insuranceType+"</td>"+
+		     "<td>"+row.insurance+"</td>"+
+		     "<td>"+classify+"</td>"+
+		     "<td>"+row.underwrite+"</td>"+
+		     "<td>"+row.cooperator+"</td>"+
+		     "<td>"+putawayTime+"</td>"+
+		     "<td>"+soldOutTime+"</td>"+
+		     "<td>"+updateTime+"</td>"+
+		     "<td>"+row.status+"</td>"+
+		     "<td>"+agentCharge+"</td>"+
+		     "<td>"+dCCharge+"</td>"+
+		     "<td>"+row.updateContent+"</td>"+
+		     "<td><a class='btn btn-particulars'><b>详情</b></a> </td>";
+   return tds;
+}
+
+
+
+</script>
+
+
+
+
